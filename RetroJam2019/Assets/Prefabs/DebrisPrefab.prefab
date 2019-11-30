@@ -93,3 +93,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa9a50fa7c8f1845ac72abd0627d81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoardPosition: {x: 7, y: 6}
+  LastBoardPosition: {x: 0, y: 0}
