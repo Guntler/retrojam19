@@ -5,18 +5,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
-    public static GameManager Instance
+    private static GameManager s_Instance;
+
+    void Awake()
     {
-        get
-        {
-            if(_instance == null)
-            {
-                _instance = GameObject.FindObjectOfType<GameManager>();
-            }
-
-            return _instance;
-        }
+        print("Game controller is awake");
+        s_Instance = this;
     }
-
 }
