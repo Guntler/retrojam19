@@ -15,10 +15,18 @@ public class GameManager : MonoBehaviour
         s_Instance = this;
     }
 
+    public static GameManager GetInstance()
+    {
+        if (s_Instance)
+            return s_Instance;
+        else
+            return null;
+    }
+
     GlobalEventController eventCtrl;
     float evtTimeAccumulator = 0;
     int evtTicker = 0;
-    readonly int minimumTickTime = 100;
+    public float minimumTickTime = 0.1f;
 
     public GameBoard Board
     {
@@ -52,6 +60,11 @@ public class GameManager : MonoBehaviour
     private void Tick()
     {
         eventCtrl.BroadcastEvent(typeof(Update100Evt), new Update100Evt());
+
+        if (evtTicker % 2 == 0)
+        {
+            eventCtrl.BroadcastEvent(typeof(Update200Evt), new Update200Evt());
+        }
 
         if (evtTicker % 5 == 0)
         {
