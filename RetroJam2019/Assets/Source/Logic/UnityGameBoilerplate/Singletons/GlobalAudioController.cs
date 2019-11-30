@@ -39,10 +39,16 @@ public class GlobalAudioController : MonoBehaviour
 
         eventCtrl = GlobalEventController.GetInstance();
 
-        for(int i=0; i<MaxGlobalSfxSrcs; i++)
+
+        sfxInstanceList = new List<SfxInstance>();
+        sfxSrcQueue = new Queue<AudioSource>();
+
+        for (int i=0; i<MaxGlobalSfxSrcs; i++)
         {
             sfxSrcQueue.Enqueue(masterSrcObj.AddComponent<AudioSource>());
         }
+
+        
     }
 
     void SetupEvents()
