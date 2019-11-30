@@ -30,3 +30,5 @@ ipch/
 
 RacerTest/Screenshot.*.png
 RacerTest/Screenshot_*.png
+*.sln
+*.csproj
