@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
     int evtTicker = 0;
     public float minimumTickTime = 0.1f;
 
+    public int Score
+    {
+        get; set;
+    }
+
     public GameBoard Board
     {
         get; set;
@@ -35,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Score = 0;
         eventCtrl = GlobalEventController.GetInstance();
         Board = new GameBoard();
     }

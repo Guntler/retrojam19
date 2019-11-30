@@ -10,6 +10,7 @@ public class TruckBehavior : BoardItemBehavior
     public Vector2 FacingDirection = new Vector2(1, 0); //x1 - Right, x-1 - Left, y-1 - Up, y1 - Down
 
     List<CarBehavior> cars = new List<CarBehavior>();
+    CarBehavior lastCar = null;
 
     protected override void Start()
     {
@@ -20,20 +21,16 @@ public class TruckBehavior : BoardItemBehavior
     {
         Vector2 prevPos = transform.position;
 
+        LastBoardPosition = BoardPosition;
+
         transform.position += new Vector3(GameManager.TILE_X * FacingDirection.x, GameManager.TILE_Y * FacingDirection.y * -1);
         BoardPosition = gameCtrl.Board.MoveItemInDirection(this, FacingDirection);
-        
-        Vector2 prevBoardPos = BoardPosition;
+
+        Vector2 prevCarBoardPos = BoardPosition;
 
         foreach (CarBehavior c in cars)
         {
-            Vector2 newBoardPos = c.BoardPosition;
-            Vector2 newPos = c.transform.position;
-            c.transform.position = prevPos;
-            prevPos = newPos;
-
-            BoardPosition = gameCtrl.Board.MoveItemToPosition(c, prevBoardPos);
-            prevPos = newBoardPos;
+            c.MoveCar();
         }
 
         if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count > 0)
@@ -43,14 +40,25 @@ public class TruckBehavior : BoardItemBehavior
             {
                 eventCtrl.BroadcastEvent(typeof(PickedUpDebrisEvt), new PickedUpDebrisEvt(bEv));
 
-                GameObject car = Instantiate(CarPrefab, transform.position, new Quaternion(0, 0, 0, 0));
-                transform.position += new Vector3(GameManager.TILE_X * FacingDirection.x, GameManager.TILE_Y * FacingDirection.y * -1);
+                BoardItemBehavior attachTo = null;
+                if (lastCar != null)
+                {
+                    attachTo = lastCar;
+                }
+                else
+                {
+                    attachTo = this;
+                }
+
+                GameObject car = Instantiate(CarPrefab, gameCtrl.Board.GetWorldPosition(attachTo.LastBoardPosition), new Quaternion(0, 0, 0, 0));
                 CarBehavior cB = car.GetComponent<CarBehavior>();
                 cB.truckObj = this;
+                cB.attachedTo = attachTo;
 
-                gameCtrl.Board.AddItem(cB, (int)BoardPosition.x, (int)BoardPosition.y);
-                BoardPosition = gameCtrl.Board.MoveItemInDirection(this, FacingDirection);
+
+                gameCtrl.Board.AddItem(cB, attachTo.LastBoardPosition);
                 cars.Add(cB);
+                lastCar = cB;
             }
         }
     }
@@ -64,7 +72,6 @@ public class TruckBehavior : BoardItemBehavior
 
             gameCtrl.Board.AddItem(this, BoardPosition);
             eventCtrl.QueueListener(typeof(Update200Evt), new GlobalEventController.Listener(gameObject.GetInstanceID(), Update200EvtCallback));
-
         }
         
         bool hasMoved = false;

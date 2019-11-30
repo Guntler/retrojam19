@@ -73,6 +73,7 @@ public class GameBoard
         }
 
         board[x, y].BoardItems.Add(item);
+        item.BoardPosition = new Vector2(x, y);
         //items.Add(item);
 
         return true;
@@ -108,7 +109,7 @@ public class GameBoard
 
     public Vector2 GetWorldPosition(Vector2 pos)
     {
-        return new Vector2(pos.x - 0.5f, pos.y - 0.5f);
+        return new Vector2(pos.x + 0.5f, pos.y - 0.5f);
     }
 
     public Vector2 MoveItemToPosition(BoardItemBehavior item, Vector2 position)

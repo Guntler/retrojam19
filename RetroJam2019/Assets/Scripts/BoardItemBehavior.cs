@@ -8,6 +8,7 @@ public class BoardItemBehavior : MonoBehaviour
     protected GameManager gameCtrl;
     protected GlobalEventController eventCtrl;
     protected bool isEventReady = false;
+    public Vector2 LastBoardPosition;
 
     protected virtual void Start()
     {
