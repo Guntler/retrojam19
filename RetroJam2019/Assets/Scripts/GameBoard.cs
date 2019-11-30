@@ -161,7 +161,6 @@ public class GameBoard
             for (var y = startY; y < boardYSize && y >= 0; y -= yDirection)
             {
                 Cell c = board[x, y];
-                Debug.Log("Cell contents " + c.BoardItems.Count);
                 if (!c.BoardItems.Contains(item))
                 {
                     continue;
