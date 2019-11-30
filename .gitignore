@@ -1,0 +1,32 @@
+Library/
+ProjectSettings/
+Temp/
+.vs/
+obj/
+Logs/
+Screenshots/
+RacerTest/Build/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+
+
+RacerTest/Screenshot.*.png
+RacerTest/Screenshot_*.png
