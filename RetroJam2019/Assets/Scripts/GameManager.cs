@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static float TILE_X = 1;
+    public static float TILE_Y = 1;
+
     private static GameManager s_Instance;
     void Awake()
     {
