@@ -34,14 +34,22 @@ public class GameManager : MonoBehaviour
         get; set;
     }
 
+    public int Lives
+    {
+        get; set;
+    }
+
     public GameBoard Board
     {
         get; set;
     }
 
+    private bool isEventReady = false;
+
     void Start()
     {
         Score = 0;
+        Lives = 5;
         eventCtrl = GlobalEventController.GetInstance();
         eventCtrl.QueueListener(typeof(StartTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StartTickCallback));
         eventCtrl.QueueListener(typeof(StopTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopTickCallback));
@@ -60,7 +68,14 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isTicking)
+        if (!isEventReady)
+        {
+            eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnRocketCollided));
+            eventCtrl.QueueListener(typeof(AddScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnAddScore));
+            isEventReady = true;
+        }
+
+        if (isTicking)
         {
             evtTimeAccumulator += Time.fixedDeltaTime;
 
@@ -97,5 +112,20 @@ public class GameManager : MonoBehaviour
         {
             eventCtrl.BroadcastEvent(typeof(Update1000Evt), new Update1000Evt());
         }
+    }
+
+    void OnRocketCollided(GameEvent e)
+    {
+        Lives--;
+
+        if (Lives <= 0)
+        {
+            eventCtrl.BroadcastEvent(typeof(GameEndEvt), new GameEndEvt());
+        }
+    }
+
+    void OnAddScore(GameEvent e)
+    {
+        Score += 1;
     }
 }

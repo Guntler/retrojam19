@@ -11,6 +11,8 @@ public class DebrisSpawner : MonoBehaviour
 
     private GlobalEventController eventController;
     private bool evtReady = false;
+    public int SpawnRate = 2;
+    private int spawnTick = 0;
 
     public void Start()
     {
@@ -20,12 +22,17 @@ public class DebrisSpawner : MonoBehaviour
     void InstatiateAtRandomPos(GameEvent e)
     {
         int newX, newY;
+        spawnTick++;
+
+        if (spawnTick % SpawnRate != 0)
+        {
+            return;
+        }
 
         do
         {
-            print("Cenas");
-            newX = Random.Range(0, _gameBoard.GetWidth());
-            newY = Random.Range(0, _gameBoard.GetHeight());
+            newX = Random.Range(3, _gameBoard.GetWidth() - 3);
+            newY = Random.Range(2, _gameBoard.GetHeight() - 8);
         }
         while (_gameBoard.GetBoard()[newX, newY].BoardItems.Count != 0);
 

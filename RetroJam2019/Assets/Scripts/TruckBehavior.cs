@@ -33,7 +33,10 @@ public class TruckBehavior : BoardItemBehavior
             c.MoveCar();
         }
 
-        CheckCollision();
+        if (CheckCollision())
+        {
+            return;
+        }
 
         if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count > 0)
         {
@@ -90,7 +93,7 @@ public class TruckBehavior : BoardItemBehavior
             FacingDirection = new Vector2(-1, 0);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.S)/* && FacingDirection.y != -1*/)
+        else if (Input.GetKey(KeyCode.S) && FacingDirection.y != -1)
         {
             //transform.position += new Vector3(0, -GameManager.TILE_Y);
             FacingDirection = new Vector2(0, 1);
@@ -124,21 +127,24 @@ public class TruckBehavior : BoardItemBehavior
         eventCtrl.RemoveListener(typeof(Update200Evt), Update200EvtCallback);
     }
 
-    private void CheckCollision()
+    private bool CheckCollision()
     {
         if (BoardPosition.x < 0 || BoardPosition.y < 0
             || BoardPosition.x >= gameCtrl.Board.GetWidth() || BoardPosition.y >= gameCtrl.Board.GetHeight())
         {
             eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
             Destroy(gameObject);
+            return true;
         }
 
-        if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is CarBehavior))
+        if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is CarBehavior || i is RocketBehavior))
         {
             eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
             Destroy(gameObject);
+            return true;
         }
-        else if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is IncineratorBehavior))
+
+        if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is IncineratorBehavior))
         {
             eventCtrl.BroadcastEvent(typeof(DeliveredDebrisEvt), new DeliveredDebrisEvt());
             if(cars.Count > 0)
@@ -153,5 +159,7 @@ public class TruckBehavior : BoardItemBehavior
             }
             
         }
+
+        return false;
     }
 }
