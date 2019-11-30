@@ -33,6 +33,8 @@ public class TruckBehavior : BoardItemBehavior
             c.MoveCar();
         }
 
+        CheckCollision();
+
         if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count > 0)
         {
             BoardItemBehavior bEv = gameCtrl.Board.GetCell(BoardPosition).BoardItems.Find(b => b is DebrisBehavior);
@@ -88,7 +90,7 @@ public class TruckBehavior : BoardItemBehavior
             FacingDirection = new Vector2(-1, 0);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.S) && FacingDirection.y != -1)
+        else if (Input.GetKey(KeyCode.S)/* && FacingDirection.y != -1*/)
         {
             //transform.position += new Vector3(0, -GameManager.TILE_Y);
             FacingDirection = new Vector2(0, 1);
@@ -119,6 +121,22 @@ public class TruckBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
-        eventCtrl.RemoveListener(typeof(Update100Evt), Update200EvtCallback);
+        eventCtrl.RemoveListener(typeof(Update200Evt), Update200EvtCallback);
+    }
+
+    private void CheckCollision()
+    {
+        if (BoardPosition.x < 0 || BoardPosition.y < 0
+            || BoardPosition.x >= gameCtrl.Board.GetWidth() || BoardPosition.y >= gameCtrl.Board.GetHeight())
+        {
+            eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
+            Destroy(gameObject);
+        }
+
+        if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is CarBehavior))
+        {
+            eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
+            Destroy(gameObject);
+        }
     }
 }

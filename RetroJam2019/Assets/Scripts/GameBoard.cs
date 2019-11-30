@@ -114,10 +114,10 @@ public class GameBoard
 
     public Vector2 MoveItemToPosition(BoardItemBehavior item, Vector2 position)
     {
-        Cell c = board[(int)position.x, (int)position.y];
+        Cell c = board[(int)item.BoardPosition.x, (int)item.BoardPosition.y];
         if (!c.BoardItems.Contains(item))
         {
-            return position;
+            return item.BoardPosition;
         }
 
         c.BoardItems.Remove(item);

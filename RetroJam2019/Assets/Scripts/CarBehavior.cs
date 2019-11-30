@@ -17,17 +17,21 @@ public class CarBehavior : BoardItemBehavior
     {
         if (!evtReady)
         {
-           // eventCtrl.QueueListener(typeof(Update200Evt), new GlobalEventController.Listener(gameObject.GetInstanceID(), Update200EvtCallback));
+            eventCtrl.QueueListener(typeof(TruckCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), TruckDestroyedCallback));
             evtReady = true;
         }
     }
 
     public void MoveCar()
     {
-        var newPos = gameCtrl.Board.MoveItemToPosition(this, attachedTo.LastBoardPosition);
         LastBoardPosition = BoardPosition;
-        BoardPosition = newPos;
+        var newPos = gameCtrl.Board.MoveItemToPosition(this, attachedTo.LastBoardPosition);
         transform.position = gameCtrl.Board.GetWorldPosition(new Vector2(BoardPosition.x, -BoardPosition.y));
+    }
+
+    public void TruckDestroyedCallback(GameEvent e)
+    {
+        Destroy(gameObject);
     }
 }
 
