@@ -155,7 +155,7 @@ MonoBehaviour:
   CurrentMap: {fileID: 0}
   IsChangingScene: 0
   AutoChangeSceneOnBoot: 0
-  DefaultMap: TitleScreen
+  DefaultMap: JunkyardScene
   IsEventReady: 0
 --- !u!114 &525149195
 MonoBehaviour:

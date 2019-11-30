@@ -24,7 +24,12 @@ public class Update1000Evt : GameEvent
 
 public class PickedUpDebrisEvt : GameEvent
 {
+    public BoardItemBehavior PickedItem;
 
+    public PickedUpDebrisEvt(BoardItemBehavior item) : base()
+    {
+        PickedItem = item;
+    }
 }
 
 public class RocketCollidedEvt : GameEvent
