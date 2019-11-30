@@ -18,10 +18,11 @@ public class TruckBehavior : BoardItemBehavior
 
     void Update200EvtCallback(GameEvent e)
     {
+        Vector2 prevPos = transform.position;
+
         transform.position += new Vector3(GameManager.TILE_X * FacingDirection.x, GameManager.TILE_Y * FacingDirection.y * -1);
         BoardPosition = gameCtrl.Board.MoveItemInDirection(this, FacingDirection);
-
-        Vector2 prevPos = transform.position;
+        
         Vector2 prevBoardPos = BoardPosition;
 
         foreach (CarBehavior c in cars)
@@ -35,10 +36,10 @@ public class TruckBehavior : BoardItemBehavior
             prevPos = newBoardPos;
         }
 
-        if(gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count > 0)
+        if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count > 0)
         {
             BoardItemBehavior bEv = gameCtrl.Board.GetCell(BoardPosition).BoardItems.Find(b => b is DebrisBehavior);
-            if(bEv != null)
+            if (bEv != null)
             {
                 eventCtrl.BroadcastEvent(typeof(PickedUpDebrisEvt), new PickedUpDebrisEvt(bEv));
 
@@ -48,13 +49,12 @@ public class TruckBehavior : BoardItemBehavior
                 cB.truckObj = this;
 
                 gameCtrl.Board.AddItem(cB, (int)BoardPosition.x, (int)BoardPosition.y);
+                BoardPosition = gameCtrl.Board.MoveItemInDirection(this, FacingDirection);
                 cars.Add(cB);
             }
         }
-        print(gameCtrl.Board.GetCell(BoardPosition).BoardItems.Count);
-
-
     }
+
 
     void FixedUpdate()
     {
@@ -69,25 +69,25 @@ public class TruckBehavior : BoardItemBehavior
         
         bool hasMoved = false;
 
-        if(Input.GetKey(KeyCode.W))
+        if(Input.GetKey(KeyCode.W) && FacingDirection.y != 1)
         {
             //transform.position += new Vector3(0, GameManager.TILE_Y);
             FacingDirection = new Vector2(0, -1);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A) && FacingDirection.x != 1)
         {
             //transform.position += new Vector3(-GameManager.TILE_X, 0);
             FacingDirection = new Vector2(-1, 0);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) && FacingDirection.y != -1)
         {
             //transform.position += new Vector3(0, -GameManager.TILE_Y);
             FacingDirection = new Vector2(0, 1);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) && FacingDirection.x != -1)
         {
             //transform.position += new Vector3(GameManager.TILE_X, 0);
             FacingDirection = new Vector2(1, 0);
