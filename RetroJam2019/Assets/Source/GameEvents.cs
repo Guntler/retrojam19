@@ -7,6 +7,11 @@ public class Update100Evt : GameEvent
 
 }
 
+public class Update200Evt : GameEvent
+{
+
+}
+
 public class Update500Evt : GameEvent
 {
 
