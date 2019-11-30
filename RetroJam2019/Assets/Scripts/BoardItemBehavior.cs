@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class BoardItemBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected GlobalEventController eventCtrl;
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void Start()
     {
-        
+        eventCtrl = GlobalEventController.GetInstance();
     }
 }
