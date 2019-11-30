@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     float evtTimeAccumulator = 0;
     int evtTicker = 0;
     public float minimumTickTime = 0.1f;
+    private bool isTicking = false;
 
     public int Score
     {
@@ -42,24 +43,39 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         eventCtrl = GlobalEventController.GetInstance();
+        eventCtrl.QueueListener(typeof(StartTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StartTickCallback));
+        eventCtrl.QueueListener(typeof(StopTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopTickCallback));
         Board = new GameBoard();
+    }
+
+    void StartTickCallback(GameEvent e)
+    {
+        isTicking = true;
+    }
+
+    void StopTickCallback(GameEvent e)
+    {
+        isTicking = false;
     }
 
     private void FixedUpdate()
     {
-        evtTimeAccumulator += Time.fixedDeltaTime;
-
-        if (evtTimeAccumulator >= minimumTickTime)
+        if(isTicking)
         {
-            evtTicker++;
-            evtTimeAccumulator -= minimumTickTime;
+            evtTimeAccumulator += Time.fixedDeltaTime;
 
-            if (evtTicker > 10)
+            if (evtTimeAccumulator >= minimumTickTime)
             {
-                evtTicker = 0;
-            }
+                evtTicker++;
+                evtTimeAccumulator -= minimumTickTime;
 
-            Tick();
+                if (evtTicker > 10)
+                {
+                    evtTicker = 0;
+                }
+
+                Tick();
+            }
         }
     }
 

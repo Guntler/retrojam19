@@ -33,5 +33,16 @@ public class CarBehavior : BoardItemBehavior
     {
         Destroy(gameObject);
     }
+
+    public void DeliverCar()
+    {
+        eventCtrl.BroadcastEvent(typeof(AddScoreEvt), new AddScoreEvt());
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        eventCtrl.RemoveListener(typeof(TruckCollidedEvt), TruckDestroyedCallback);
+    }
 }
 

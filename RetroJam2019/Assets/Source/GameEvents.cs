@@ -46,6 +46,27 @@ public class DeliveredDebrisEvt : GameEvent
 {
 
 }
+
+public class DeliverCarEvt : GameEvent
+{
+    public CarBehavior CarToDeliver;
+
+    public DeliverCarEvt(CarBehavior car)
+    {
+        CarToDeliver = car;
+    }
+}
+
+public class StopTickEvt : GameEvent
+{
+
+}
+
+public class StartTickEvt : GameEvent
+{
+
+}
+
 public class AddScoreEvt : GameEvent
 {
 

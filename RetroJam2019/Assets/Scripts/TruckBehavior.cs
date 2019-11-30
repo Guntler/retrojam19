@@ -138,5 +138,20 @@ public class TruckBehavior : BoardItemBehavior
             eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
             Destroy(gameObject);
         }
+        else if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is IncineratorBehavior))
+        {
+            eventCtrl.BroadcastEvent(typeof(DeliveredDebrisEvt), new DeliveredDebrisEvt());
+            if(cars.Count > 0)
+            {
+                eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
+                for (int i = cars.Count - 1; i > 0; i++)
+                {
+                    CarBehavior c = cars[i];
+                    gameCtrl.Board.RemoveItem(c);
+                }
+                eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
+            }
+            
+        }
     }
 }
