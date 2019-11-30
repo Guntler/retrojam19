@@ -34,6 +34,7 @@ public class DebrisBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
+        gameCtrl.Board.RemoveItem(this);
         eventCtrl.RemoveListener(typeof(PickedUpDebrisEvt), PickedUpDebrisCallback);
     }
 }

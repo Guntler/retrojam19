@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RocketBehavior : BoardItemBehavior
 {
-    int countDownTime = 25;
+    int countDownTime = 10;
     bool hasLaunched = false;
-    Vector2 BottomBoardPosition;
+    public Vector2 BottomBoardPosition;
 
     protected override void Start()
     {
@@ -17,7 +17,7 @@ public class RocketBehavior : BoardItemBehavior
     {
         if (!isEventReady)
         {
-            eventCtrl.QueueListener(typeof(Update200Evt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnUpdate));
+            eventCtrl.QueueListener(typeof(Update500Evt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnUpdate));
             isEventReady = true;
             BottomBoardPosition = new Vector2(BoardPosition.x, BoardPosition.y + 1);
 
@@ -70,6 +70,7 @@ public class RocketBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
-        eventCtrl.RemoveListener(typeof(Update200Evt), OnUpdate);
+        gameCtrl.Board.RemoveItem(this);
+        eventCtrl.RemoveListener(typeof(Update500Evt), OnUpdate);
     }
 }
