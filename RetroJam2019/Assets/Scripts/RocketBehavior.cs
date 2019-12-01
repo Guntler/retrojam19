@@ -78,6 +78,7 @@ public class RocketBehavior : BoardItemBehavior
         if (BoardPosition.x < 0 || BoardPosition.y < 0
             || BoardPosition.x >= gameCtrl.Board.GetWidth() || BoardPosition.y >= gameCtrl.Board.GetHeight())
         {
+            eventCtrl.BroadcastEvent(typeof(RocketSafeEvt), new RocketSafeEvt());
             eventCtrl.BroadcastEvent(typeof(AddScoreEvt), new AddScoreEvt(GameManager.SCORE_PER_ROCKET));
             Destroy(gameObject);
         }

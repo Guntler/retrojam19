@@ -59,4 +59,9 @@ public class ScoreUIBehavior : MonoBehaviour
         yield return null;
     }
 
+    private void OnDestroy()
+    {
+        eventCtrl.RemoveListener(typeof(UpdateScoreEvt), UpdateScoreCallback);
+        eventCtrl.RemoveListener(typeof(CreateScoreMultiplierTextEvt), CreateScoreMultiplierTextCallback);
+    }
 }

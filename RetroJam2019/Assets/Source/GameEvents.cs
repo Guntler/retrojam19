@@ -37,6 +37,11 @@ public class RocketCollidedEvt : GameEvent
 
 }
 
+public class RocketSafeEvt : GameEvent
+{
+
+}
+
 public class TruckCollidedEvt : GameEvent
 {
 

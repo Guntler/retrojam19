@@ -799,14 +799,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 933224246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 31ea77bd01ce71b428e650a14faf5eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  RocketDestroyedPrefab: {fileID: 4196559596988699744, guid: ed555236840529542bfc4bbe604cb583,
+    type: 3}
+  RocketAwayPrefab: {fileID: 891119027490064363, guid: 229e62fd94943b645b55881369974566,
+    type: 3}
 --- !u!114 &933224248
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -123,6 +123,8 @@ public class CarBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
+        eventCtrl.BroadcastEvent(typeof(StopTimerEvent), new StopTimerEvent("deliverNextCar" + gameObject.GetInstanceID()));
+        eventCtrl.BroadcastEvent(typeof(StopTimerEvent), new StopTimerEvent("destroyNextCar" + gameObject.GetInstanceID()));
         eventCtrl.RemoveListener(typeof(TruckCollidedEvt), TruckDestroyedCallback);
     }
 }
