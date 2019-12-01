@@ -48,7 +48,7 @@ public class GameCanvasBehavior : MonoBehaviour
         ShowNameEntryEvt ev = (ShowNameEntryEvt)e;
 
         GameObject obj = Instantiate(NameEntryPrefab, transform);
-        obj.GetComponent<NewEntryScoreBehavior>().UpdateScore(ev.Score);
+        obj.GetComponent<NewEntryScoreBehavior>().UpdateScore(ev.Score, ev.Index);
     }
 
     private void OnDestroy()

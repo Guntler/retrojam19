@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Score = 10;
+        Score = 0;
         Lives = 5;
         eventCtrl = GlobalEventController.GetInstance();
         bgmSrc = GetComponent<AudioSource>();
@@ -184,29 +184,41 @@ public class GameManager : MonoBehaviour
 
         string currentLine = "";
 
+        //string[] linesDivided = lines.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+        //print("FOUND : " + linesDivided.Length);
+
         for (int i = 0; i < lines.Length; i++)
         {
             if (lines[i] == '\n')
             {
+                if (currentLine.Contains(","))
+                {
+                    string[] fields = currentLine.Split(',');
+
+                    if (fields.Length > 0)
+                    {
+                        data_HighScoreEntry entry = new data_HighScoreEntry();
+                        print(fields + " - " + fields[0] + " - " + fields[1]);
+                        entry.Name = fields[0];
+                        entry.Score = Int32.Parse(fields[1]);
+
+                        entryList.Add(entry);
+
+                        currentLine = "";
+                    }
+                }
+
                 continue;
             }
-
-            currentLine += lines[i];
-        }
-
-        if(currentLine.Contains(","))
-        {
-            string[] fields = currentLine.Split(',');
-
-            if (fields.Length > 0)
+            else
             {
-                data_HighScoreEntry entry = new data_HighScoreEntry();
-                entry.Name = fields[0];
-                entry.Score = Int32.Parse(fields[1]);
-
-                entryList.Add(entry);
+                currentLine += lines[i];
             }
+
+            
         }
+
+        
 
         f.Close();
 
@@ -222,7 +234,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("WRITING TO HIGH SCORES FILE " + entryList.Count);
         string path = Application.dataPath + "/Resources/Data/HighScores.txt";
-        
+
+        File.WriteAllText(path, string.Empty);
 
         List<string> lines = new List<string>();
         string fullText = "";
@@ -248,9 +261,34 @@ public class GameManager : MonoBehaviour
         List<data_HighScoreEntry> entryList = ReadHighScoreList();
         print("Found " + entryList.Count);
 
-        if ((entryList.Count > 0 && entryList[0].Score > Score) || (entryList.Count == 0 && Score > 0))
+        if (entryList.Count > 0)
         {
-            eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score));
+            bool foundHigher = false;
+            int i = 0;
+            for (; i < entryList.Count; i++)
+            {
+                data_HighScoreEntry entry = entryList[i];
+                if (Score > entry.Score)
+                {
+                    foundHigher = true;
+                    print("Current score " + Score + " is higher than " + entry.Score);
+                    break;
+                }
+            }
+
+            if(foundHigher)
+            {
+                eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score, i));
+            }
+            else
+            {
+                print("Current score " + Score + " is too low");
+                GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable());
+            }
+        }
+        else if (entryList.Count == 0 && Score > 0)
+        {
+            eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score, 0));
         }
         else
         {
@@ -265,14 +303,11 @@ public class GameManager : MonoBehaviour
 
         List<data_HighScoreEntry> entryList = ReadHighScoreList();
 
-        if(entryList.Count > 0)
+        entryList.Insert(ev.entry.Index, ev.entry);
+
+        if (entryList.Count > 7)
         {
-            entryList.Insert(0, ev.entry);
             entryList.RemoveAt(entryList.Count - 1);
-        }
-        else
-        {
-            entryList.Insert(0, ev.entry);
         }
         
         WriteHighScoreList(entryList);

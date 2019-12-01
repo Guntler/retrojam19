@@ -9,6 +9,7 @@ public class NewEntryScoreBehavior : MonoBehaviour
     public GameObject ScoreObj;
     public GameObject PlayerNameInputField;
     public int Score;
+    public int Index;
     public float TypingDelay = 0.1f;
 
     Text scoreText;
@@ -69,6 +70,7 @@ public class NewEntryScoreBehavior : MonoBehaviour
                     data_HighScoreEntry data = new data_HighScoreEntry();
                     data.Name = currentName;
                     data.Score = Score;
+                    data.Index = Index;
                     eventCtrl.BroadcastEvent(typeof(RegisterNewEntryEvt), new RegisterNewEntryEvt(data));
                     
                     Destroy(gameObject);
@@ -96,11 +98,12 @@ public class NewEntryScoreBehavior : MonoBehaviour
         playerNameText.text = currentName;
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore(int score, int index)
     {
         scoreText = ScoreObj.GetComponent<Text>();
 
         Score = score;
+        Index = index;
         scoreText.text = Score.ToString();
     }
 }

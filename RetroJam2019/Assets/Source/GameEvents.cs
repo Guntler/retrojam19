@@ -60,10 +60,12 @@ public class ShowHighScoreTable : GameEvent
 public class ShowNameEntryEvt : GameEvent
 {
     public int Score = 0;
+    public int Index = 0;
 
-    public ShowNameEntryEvt(int score)
+    public ShowNameEntryEvt(int score, int idx)
     {
         Score = score;
+        Index = idx;
     }
 }
 

@@ -6,6 +6,7 @@ public struct data_HighScoreEntry
 {
     public string Name;
     public int Score;
+    public int Index;
 }
 
 public class HighScoreTableBehavior : MonoBehaviour
