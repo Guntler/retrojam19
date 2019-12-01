@@ -24,4 +24,9 @@ public class IncineratorBehavior : BoardItemBehavior
         print("Delivering car");
         Instantiate(IncinFullPrefab, transform.position - IncinFullOffset, new Quaternion(0,0,0,0));
     }
+
+    private void OnDestroy()
+    {
+        eventCtrl.RemoveListener(typeof(DeliverCarEvt),  DeliverCarCallback);
+    }
 }

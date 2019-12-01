@@ -86,5 +86,7 @@ public class ScoreUIBehavior : MonoBehaviour
     {
         eventCtrl.RemoveListener(typeof(UpdateScoreEvt), UpdateScoreCallback);
         eventCtrl.RemoveListener(typeof(CreateScoreMultiplierTextEvt), CreateScoreMultiplierTextCallback);
+        eventCtrl.RemoveListener(typeof(GameStartEvt), OnGameStart);
+        eventCtrl.RemoveListener(typeof(GameEndEvt), OnGameEnd);
     }
 }

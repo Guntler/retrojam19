@@ -57,5 +57,8 @@ public class GameCanvasBehavior : MonoBehaviour
 
         eventCtrl.RemoveListener(typeof(RocketSafeEvt), RocketSafeCallback);
         eventCtrl.RemoveListener(typeof(RocketCollidedEvt), RocketDestroyedCallback);
+        eventCtrl.RemoveListener(typeof(ShowNameEntryEvt), ShowNameEntryCallback);
+        eventCtrl.RemoveListener(typeof(ShowHighScoreTable), HighScoreTableCallback);
+        eventCtrl.RemoveListener(typeof(GameEndEvt), GameEndCallback);
     }
 }

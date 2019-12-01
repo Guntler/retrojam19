@@ -69,4 +69,10 @@ public class RocketSpawner : MonoBehaviour
         SpawnRate = 3;
         spawnTick = 0;
     }
+
+    private void OnDestroy()
+    {
+        eventController.RemoveListener(typeof(Update1000Evt), InstatiateAtRandomPos);
+        eventController.RemoveListener(typeof(GameStartEvt), OnGameEnd);
+    }
 }

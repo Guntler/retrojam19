@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     }
 
     AudioSource bgmSrc;
+    public AudioClip TitleSong;
+    public AudioClip GameSong;
     GlobalEventController eventCtrl;
     
     public GameObject Player;
@@ -61,6 +63,9 @@ public class GameManager : MonoBehaviour
         eventCtrl = GlobalEventController.GetInstance();
         bgmSrc = GetComponent<AudioSource>();
         Board = new GameBoard();
+        isTicking = false;
+        bgmSrc.clip = TitleSong;
+        bgmSrc.Play();
     }
 
     void StartTickCallback(GameEvent e)
@@ -231,9 +236,6 @@ public class GameManager : MonoBehaviour
         StreamWriter writer = new StreamWriter(path, true);
         writer.WriteLine(fullText);
         writer.Close();
-
-        
-
     }
 
     /// <summary>
@@ -300,4 +302,15 @@ public class GameManager : MonoBehaviour
         eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
     }
 
+    private void OnDestroy()
+    {
+        eventCtrl.RemoveListener(typeof(StartTickEvt), StartTickCallback);
+        eventCtrl.RemoveListener(typeof(StopTickEvt), StopTickCallback);
+        eventCtrl.RemoveListener(typeof(RocketCollidedEvt), OnRocketCollided);
+        eventCtrl.RemoveListener(typeof(AddScoreEvt), OnAddScore);
+        eventCtrl.RemoveListener(typeof(StopBackgroundMusicEvt), StopBgmCallback);
+        eventCtrl.RemoveListener(typeof(CheckHighScoreEvt), CheckScoreCallback);
+        eventCtrl.RemoveListener(typeof(RegisterNewEntryEvt), RegisterNameCallback);
+        eventCtrl.RemoveListener(typeof(GameStartEvt), GameResetCallback);
+    }
 }

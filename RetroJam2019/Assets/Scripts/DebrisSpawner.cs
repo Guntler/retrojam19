@@ -111,4 +111,10 @@ public class DebrisSpawner : MonoBehaviour
 
         return false;
     }
+
+    private void OnDestroy()
+    {
+        eventController.RemoveListener(typeof(Update1000Evt), InstatiateAtRandomPos);
+        eventController.RemoveListener(typeof(GameStartEvt), OnGameEnd);
+    }
 }
