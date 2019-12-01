@@ -48,7 +48,6 @@ public class GlobalVibrationManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
     }
 
     void SetupEvents()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct data_HighScoreEntry
 {
@@ -74,6 +75,7 @@ public class HighScoreTableBehavior : MonoBehaviour
         {
             canSkipGameOver = false;
 
+            SceneManager.LoadScene("JunkyardScene");
             eventCtrl.BroadcastEvent(typeof(GameStartEvt), new GameStartEvt());
             Destroy(gameObject);
         }

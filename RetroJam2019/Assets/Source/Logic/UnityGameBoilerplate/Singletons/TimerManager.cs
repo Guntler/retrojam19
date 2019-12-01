@@ -97,7 +97,6 @@ public class TimerManager : MonoBehaviour {
     void Awake()
     {
         //s_Instance = this;
-        DontDestroyOnLoad(this);
     }
 
     /*public static TimerManager GetInstance()

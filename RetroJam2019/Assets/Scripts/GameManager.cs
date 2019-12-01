@@ -276,7 +276,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if(foundHigher)
+            if(foundHigher || entryList.Count < 7)
             {
                 eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score, i));
             }

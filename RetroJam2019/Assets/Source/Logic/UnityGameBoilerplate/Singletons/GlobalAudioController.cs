@@ -34,8 +34,7 @@ public class GlobalAudioController : MonoBehaviour
         masterSrcObj.transform.parent = transform;
 
         masterSrc = masterSrcObj.AddComponent<AudioSource>();
-
-        DontDestroyOnLoad(this);
+        
 
         eventCtrl = GlobalEventController.GetInstance();
 

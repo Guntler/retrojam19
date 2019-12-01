@@ -1,3 +1,5 @@
 guntler,600
 gggg,300
+stff,150
+tunks,50
 
