@@ -13,6 +13,7 @@ public class CarBehavior : BoardItemBehavior
     private bool evtReady = false;
     public bool IsCornerBox = false;
     public AudioSettings CarDeathSfx;
+    public GameObject CardExplosion;
 
     protected override void Start()
     {
@@ -118,6 +119,7 @@ public class CarBehavior : BoardItemBehavior
         }
 
         gameCtrl.Board.RemoveItem(this);
+        GameObject explosion = Instantiate(CardExplosion, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }

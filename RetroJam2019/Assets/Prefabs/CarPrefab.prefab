@@ -104,6 +104,8 @@ MonoBehaviour:
   attachesTo: {fileID: 0}
   IsCornerBox: 0
   CarDeathSfx: {fileID: 11400000, guid: e8e6a47d0d267b848835d4ad13bd1517, type: 2}
+  CardExplosion: {fileID: 6783973042077351358, guid: 15196420725114e4e9f553729d9b80fe,
+    type: 3}
 --- !u!95 &963026625
 Animator:
   serializedVersion: 3
