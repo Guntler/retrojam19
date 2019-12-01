@@ -21,6 +21,9 @@ public class TruckBehavior : BoardItemBehavior
     
     AudioSource sfxSrc;
     public AudioSettings PlayerDeathSfx;
+    public AudioClip ExplosionSound;
+    public GameObject Explosion;
+
     List<CarBehavior> cars = new List<CarBehavior>();
     CarBehavior lastCar = null;
     Animator animComp;
@@ -232,5 +235,6 @@ public class TruckBehavior : BoardItemBehavior
         
 
         gameCtrl.RemoveLives();
+        GameObject explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
     }
 }
