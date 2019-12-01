@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     }
 
     GlobalEventController eventCtrl;
+    public GameObject Player;
     float evtTimeAccumulator = 0;
     int evtTicker = 0;
     public float minimumTickTime = 0.1f;
@@ -124,6 +125,7 @@ public class GameManager : MonoBehaviour
         if (Lives <= 0)
         {
             eventCtrl.BroadcastEvent(typeof(GameEndEvt), new GameEndEvt());
+            Player.GetComponent<TruckBehavior>().DestroyTruck();
         }
     }
 
