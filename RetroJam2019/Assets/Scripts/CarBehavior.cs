@@ -7,6 +7,7 @@ public class CarBehavior : BoardItemBehavior
     public SpriteRenderer sprComp;
     public TruckBehavior truckObj;
     public BoardItemBehavior attachedTo;
+    
     private bool evtReady = false;
 
     protected override void Start()
@@ -40,7 +41,6 @@ public class CarBehavior : BoardItemBehavior
     {
         sprComp.enabled = false;
 
-        eventCtrl.BroadcastEvent(typeof(AddScoreEvt), new AddScoreEvt());
         eventCtrl.BroadcastEvent(typeof(DeliverCarEvt), new DeliverCarEvt(this));
         if (attachedTo != null && !(attachedTo is TruckBehavior))
         {   
@@ -48,6 +48,7 @@ public class CarBehavior : BoardItemBehavior
         }
         else
         {
+            eventCtrl.BroadcastEvent(typeof(DeliveredDebrisEvt), new DeliveredDebrisEvt());
             eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
         }
 

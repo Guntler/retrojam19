@@ -9,6 +9,14 @@ public class TruckBehavior : BoardItemBehavior
     public GameObject CarPrefab;
     public Vector2 FacingDirection = new Vector2(1, 0); //x1 - Right, x-1 - Left, y-1 - Up, y1 - Down
 
+    /// <summary>
+    /// Minimum amount of crates to earn a new multiplier level
+    /// </summary>
+    public int CarIntervalForMultiplier = 5;
+
+    private int currentMultiplier = 1;
+    private int carsDelivered = 0;
+
     List<CarBehavior> cars = new List<CarBehavior>();
     CarBehavior lastCar = null;
 
@@ -68,6 +76,23 @@ public class TruckBehavior : BoardItemBehavior
         }
     }
 
+    void DeliverCarEvtCallback(GameEvent e)
+    {
+        carsDelivered++;
+        if(carsDelivered % CarIntervalForMultiplier == 0)
+        {
+            currentMultiplier++;
+            eventCtrl.BroadcastEvent(typeof(CreateScoreMultiplierTextEvt), new CreateScoreMultiplierTextEvt(currentMultiplier));
+        }
+        eventCtrl.BroadcastEvent(typeof(AddScoreEvt), new AddScoreEvt(GameManager.SCORE_PER_DEBRIS * currentMultiplier));
+        
+    }
+
+    void DeliveredDebrisEvtCallback(GameEvent e)
+    {
+        carsDelivered = 0;
+        currentMultiplier = 0;
+    }
 
     void FixedUpdate()
     {
@@ -77,6 +102,8 @@ public class TruckBehavior : BoardItemBehavior
 
             gameCtrl.Board.AddItem(this, BoardPosition);
             eventCtrl.QueueListener(typeof(Update200Evt), new GlobalEventController.Listener(gameObject.GetInstanceID(), Update200EvtCallback));
+            eventCtrl.QueueListener(typeof(DeliverCarEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), DeliverCarEvtCallback));
+            eventCtrl.QueueListener(typeof(DeliveredDebrisEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), DeliveredDebrisEvtCallback));
         }
         
         bool hasMoved = false;
@@ -156,7 +183,6 @@ public class TruckBehavior : BoardItemBehavior
 
         if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is IncineratorBehavior))
         {
-            eventCtrl.BroadcastEvent(typeof(DeliveredDebrisEvt), new DeliveredDebrisEvt());
             if(cars.Count > 0)
             {
                 eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());

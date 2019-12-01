@@ -20,7 +20,6 @@ public class IncineratorTubeFullBehavior : MonoBehaviour
     {
         unitsMoved += MovementRate;
         transform.position += new Vector3(0, -MovementRate, 0);
-        print("Units " + unitsMoved + " - " + UnitsToMove);
         if (unitsMoved > UnitsToMove)
         {
             Destroy(gameObject);

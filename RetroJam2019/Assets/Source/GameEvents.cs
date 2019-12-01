@@ -67,9 +67,34 @@ public class StartTickEvt : GameEvent
 
 }
 
+public class CreateScoreMultiplierTextEvt : GameEvent
+{
+    public int Multiplier;
+
+    public CreateScoreMultiplierTextEvt(int mult) : base()
+    {
+        Multiplier = mult;
+    }
+}
+
+public class UpdateScoreEvt : GameEvent
+{
+    public int ScoreAmt = 0;
+
+    public UpdateScoreEvt(int score) : base()
+    {
+        ScoreAmt = score;
+    }
+}
+
 public class AddScoreEvt : GameEvent
 {
+    public int ScoreAmt = 0;
 
+    public AddScoreEvt(int score) : base()
+    {
+        ScoreAmt = score;
+    }
 }
 public class LaunchedRocketEvt : GameEvent
 {

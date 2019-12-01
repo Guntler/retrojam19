@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static float TILE_X = 1;
     public static float TILE_Y = 1;
+    public static int SCORE_PER_DEBRIS = 10;
+    public static int SCORE_PER_ROCKET = 50;
 
     private static GameManager s_Instance;
     void Awake()
@@ -127,6 +129,8 @@ public class GameManager : MonoBehaviour
 
     void OnAddScore(GameEvent e)
     {
-        Score += 1;
+        AddScoreEvt ev = (AddScoreEvt)e;
+        Score += ev.ScoreAmt;
+        eventCtrl.BroadcastEvent(typeof(UpdateScoreEvt), new UpdateScoreEvt(Score));
     }
 }
