@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2308726402086526571}
   - component: {fileID: 932796825902361801}
   - component: {fileID: 8313052529572675747}
+  - component: {fileID: 2944727290077829146}
   m_Layer: 0
   m_Name: DebrisPrefab
   m_TagString: Untagged
@@ -70,7 +71,8 @@ SpriteRenderer:
   m_SortingLayerID: -2050389667
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1c964811faf54984fb578104647c55cd, type: 3}
+  m_Sprite: {fileID: -3192798220984610906, guid: 4661a1e25ff71c24cb883c07f01563e9,
+    type: 3}
   m_Color: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,3 +97,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoardPosition: {x: 7, y: 6}
   LastBoardPosition: {x: 0, y: 0}
+  frameTimes:
+  - 0
+  - 0.5
+  - 0.9
+--- !u!95 &2944727290077829146
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7595982515217368957}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3db5c638eda8900458bc03197746e76b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

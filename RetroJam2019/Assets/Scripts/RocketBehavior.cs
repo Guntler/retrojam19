@@ -7,10 +7,14 @@ public class RocketBehavior : BoardItemBehavior
     int countDownTime = 10;
     bool hasLaunched = false;
     public Vector2 BottomBoardPosition;
+    public List<float> frameTimes = new List<float>();
+    Animator animComp;
 
     protected override void Start()
     {
         base.Start();
+        animComp = GetComponent<Animator>();
+        animComp.Play("DebrisAnim", 0, 0);
     }
 
     private void FixedUpdate()

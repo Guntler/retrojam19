@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5111740998836450242}
   - component: {fileID: 5111740998836450244}
   - component: {fileID: 5111740998836450243}
+  - component: {fileID: 4621549386031323121}
   m_Layer: 0
   m_Name: RocketPrefab
   m_TagString: Untagged
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6729353acb6169d4693f909a84d60635, type: 3}
-  m_Color: {r: 0.9811321, g: 0.16197933, b: 0.16197933, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,3 +94,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b723364b4d39bb844a47bd891e37612a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoardPosition: {x: 0, y: 0}
+  LastBoardPosition: {x: 0, y: 0}
+  BottomBoardPosition: {x: 0, y: 0}
+  frameTimes: []
+--- !u!95 &4621549386031323121
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111740998836450241}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e948b4441695e1e4baf79c2d89ac3373, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

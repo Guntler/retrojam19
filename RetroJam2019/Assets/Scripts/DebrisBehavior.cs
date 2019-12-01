@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class DebrisBehavior : BoardItemBehavior
 {
+    Animator animComp;
+    public List<float> frameTimes = new List<float>();
+
     protected override void Start()
     {
         base.Start();
+        animComp = GetComponent<Animator>();
+
+        var rand = Random.Range(0, frameTimes.Count);
+        print(rand);
+        animComp.Play("DebrisAnim", 0, frameTimes[rand]);
 
         eventCtrl.QueueListener(typeof(PickedUpDebrisEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), PickedUpDebrisCallback));
     }
