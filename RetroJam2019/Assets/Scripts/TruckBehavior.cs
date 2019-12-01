@@ -159,25 +159,13 @@ public class TruckBehavior : BoardItemBehavior
         if (BoardPosition.x < 0 || BoardPosition.y < 0
             || BoardPosition.x >= gameCtrl.Board.GetWidth() || BoardPosition.y >= gameCtrl.Board.GetHeight())
         {
-            eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
-            eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
-
-            CarBehavior c = lastCar;
-            gameCtrl.Board.RemoveItem(c);
-            c.DestroyCar();
-            cars.Clear();
+            DestroyTruck();
             return true;
         }
 
         if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is CarBehavior || i is RocketBehavior))
         {
-            eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
-            eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
-
-            CarBehavior c = lastCar;
-            gameCtrl.Board.RemoveItem(c);
-            c.DestroyCar();
-            cars.Clear();
+            DestroyTruck();
             return true;
         }
 
@@ -196,5 +184,16 @@ public class TruckBehavior : BoardItemBehavior
         }
 
         return false;
+    }
+
+    public void DestroyTruck()
+    {
+        eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
+        eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
+
+        CarBehavior c = lastCar;
+        gameCtrl.Board.RemoveItem(c);
+        c.DestroyCar();
+        cars.Clear();
     }
 }
