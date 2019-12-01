@@ -91,7 +91,7 @@ public class TruckBehavior : BoardItemBehavior
     void DeliveredDebrisEvtCallback(GameEvent e)
     {
         carsDelivered = 0;
-        currentMultiplier = 0;
+        currentMultiplier = 1;
     }
 
     void FixedUpdate()
