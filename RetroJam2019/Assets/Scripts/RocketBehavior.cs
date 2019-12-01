@@ -55,12 +55,12 @@ public class RocketBehavior : BoardItemBehavior
             }
             else
             {
-                AudioSettings count = new AudioSettings();
+                /*AudioSettings count = new AudioSettings();
                 count.Clip = CountdownSfx.Clip;
                 count.DefaultVolume = CountdownSfx.DefaultVolume;
-                count.DefaultPitch = countDownTime / MaxCountdownTime;
+                count.DefaultPitch = countDownTime / MaxCountdownTime;*/
                 
-                eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(count));
+                eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(CountdownSfx));
             }
         }
         else
