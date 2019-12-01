@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CarBehavior : BoardItemBehavior
 {
+    public SpriteRenderer sprComp;
     public TruckBehavior truckObj;
     public BoardItemBehavior attachedTo;
     private bool evtReady = false;
@@ -11,6 +12,7 @@ public class CarBehavior : BoardItemBehavior
     protected override void Start()
     {
         base.Start();
+        sprComp = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -36,7 +38,21 @@ public class CarBehavior : BoardItemBehavior
 
     public void DeliverCar()
     {
+        sprComp.enabled = false;
+
         eventCtrl.BroadcastEvent(typeof(AddScoreEvt), new AddScoreEvt());
+        eventCtrl.BroadcastEvent(typeof(DeliverCarEvt), new DeliverCarEvt(this));
+        if (attachedTo != null && !(attachedTo is TruckBehavior))
+        {   
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("deliverNextCar" + gameObject.GetInstanceID(), 0.5f, () => { ((CarBehavior)attachedTo).DeliverCar(); }));
+        }
+        else
+        {
+            eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
+        }
+
+        gameCtrl.Board.RemoveItem(this);
+        
         Destroy(gameObject);
     }
 

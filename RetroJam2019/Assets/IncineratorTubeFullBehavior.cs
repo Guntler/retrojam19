@@ -8,14 +8,26 @@ public class IncineratorTubeFullBehavior : MonoBehaviour
     public int UnitsToMove = 4;
 
     private float unitsMoved = 0;
-    
-    void Update()
-    {
-        unitsMoved += UnitsToMove;
+    GlobalEventController eventCtrl;
 
-        if(unitsMoved >= UnitsToMove)
+    private void Start()
+    {
+        eventCtrl = GlobalEventController.GetInstance();
+        eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("incinFullTimer_" + gameObject.GetInstanceID(), 0.15f, MoveTubeFull));
+    }
+
+    void MoveTubeFull()
+    {
+        unitsMoved += MovementRate;
+        transform.position += new Vector3(0, -MovementRate, 0);
+        print("Units " + unitsMoved + " - " + UnitsToMove);
+        if (unitsMoved > UnitsToMove)
         {
             Destroy(gameObject);
+        }
+        else
+        {
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("incinFullTimer_" + gameObject.GetInstanceID(), 0.15f, MoveTubeFull));
         }
     }
 }

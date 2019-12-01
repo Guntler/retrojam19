@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     float evtTimeAccumulator = 0;
     int evtTicker = 0;
     public float minimumTickTime = 0.1f;
-    private bool isTicking = false;
+    private bool isTicking = true;
 
     public int Score
     {
@@ -51,8 +51,7 @@ public class GameManager : MonoBehaviour
         Score = 0;
         Lives = 5;
         eventCtrl = GlobalEventController.GetInstance();
-        eventCtrl.QueueListener(typeof(StartTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StartTickCallback));
-        eventCtrl.QueueListener(typeof(StopTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopTickCallback));
+        
         Board = new GameBoard();
     }
 
@@ -70,6 +69,8 @@ public class GameManager : MonoBehaviour
     {
         if (!isEventReady)
         {
+            eventCtrl.QueueListener(typeof(StartTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StartTickCallback));
+            eventCtrl.QueueListener(typeof(StopTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopTickCallback));
             eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnRocketCollided));
             eventCtrl.QueueListener(typeof(AddScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnAddScore));
             isEventReady = true;

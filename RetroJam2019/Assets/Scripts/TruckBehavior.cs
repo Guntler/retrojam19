@@ -150,12 +150,11 @@ public class TruckBehavior : BoardItemBehavior
             if(cars.Count > 0)
             {
                 eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
-                for (int i = cars.Count - 1; i > 0; i++)
-                {
-                    CarBehavior c = cars[i];
-                    gameCtrl.Board.RemoveItem(c);
-                }
-                eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
+
+                CarBehavior c = cars[cars.Count-1];
+                gameCtrl.Board.RemoveItem(c);
+                c.DeliverCar();
+                cars.Clear();
             }
             
         }

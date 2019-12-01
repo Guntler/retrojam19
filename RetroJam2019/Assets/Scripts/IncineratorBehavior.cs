@@ -21,6 +21,7 @@ public class IncineratorBehavior : BoardItemBehavior
 
     void DeliverCarCallback(GameEvent e)
     {
+        print("Delivering car");
         Instantiate(IncinFullPrefab, transform.position - IncinFullOffset, new Quaternion(0,0,0,0));
     }
 }
