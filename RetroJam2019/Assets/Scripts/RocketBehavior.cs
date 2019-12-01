@@ -5,16 +5,20 @@ using UnityEngine;
 public class RocketBehavior : BoardItemBehavior
 {
     int countDownTime = 10;
+    int dropDebrisTime = 13;
     bool hasLaunched = false;
+    bool droppedDebris = false;
     public Vector2 BottomBoardPosition;
     public List<float> frameTimes = new List<float>();
     Animator animComp;
+    public GameObject debrisPrefab;
 
     protected override void Start()
     {
         base.Start();
         animComp = GetComponent<Animator>();
-        animComp.Play("DebrisAnim", 0, 0);
+        animComp.Play("RocketAnim", 0, 0);
+        dropDebrisTime = dropDebrisTime + Random.Range(-4, 4);
     }
 
     private void FixedUpdate()
@@ -47,11 +51,23 @@ public class RocketBehavior : BoardItemBehavior
         }
         else
         {
+            dropDebrisTime--;
             LastBoardPosition = BoardPosition;
 
             transform.position += new Vector3(0, GameManager.TILE_Y);
             BoardPosition = gameCtrl.Board.MoveItemInDirection(this, new Vector2(0,-1));
             BottomBoardPosition = new Vector2(BoardPosition.x, BoardPosition.y + 1);
+
+            if (dropDebrisTime <= 0 && !droppedDebris)
+            {
+                droppedDebris = true;
+                GameObject newDebris = Instantiate(debrisPrefab, gameCtrl.Board.GetWorldPosition(new Vector2(BottomBoardPosition.x, -(BottomBoardPosition.y+1))), Quaternion.identity);
+                gameCtrl.Board.AddItem(newDebris.GetComponent<DebrisBehavior>(), (int)BottomBoardPosition.x, (int)BottomBoardPosition.y+1);
+                newDebris.GetComponent<Animator>().Play("DebrisAnim", 0, 0);
+                newDebris.GetComponent<DebrisBehavior>().ForceAnim = true;
+
+                animComp.Play("RocketAnim", 0, 0.5f);
+            }
 
             CheckCollision();
         }

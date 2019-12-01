@@ -30,7 +30,7 @@ public class RocketSpawner : MonoBehaviour
 
         do
         {
-            newX = Random.Range(3, _gameBoard.GetWidth() - 3);
+            newX = Random.Range(7, _gameBoard.GetWidth() - 3);
         }
         while (_gameBoard.GetBoard()[newX, 18].BoardItems.Count != 0);
 

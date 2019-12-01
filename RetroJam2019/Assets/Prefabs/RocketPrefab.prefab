@@ -97,7 +97,12 @@ MonoBehaviour:
   BoardPosition: {x: 0, y: 0}
   LastBoardPosition: {x: 0, y: 0}
   BottomBoardPosition: {x: 0, y: 0}
-  frameTimes: []
+  frameTimes:
+  - 0
+  - 0.5
+  - 0.9
+  debrisPrefab: {fileID: 7595982515217368957, guid: 59a76ee17b9730a4490f19f745ba45dc,
+    type: 3}
 --- !u!95 &4621549386031323121
 Animator:
   serializedVersion: 3

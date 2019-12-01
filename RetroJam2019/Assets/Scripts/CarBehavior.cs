@@ -33,7 +33,7 @@ public class CarBehavior : BoardItemBehavior
 
     public void TruckDestroyedCallback(GameEvent e)
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public void DeliverCar()
@@ -53,6 +53,24 @@ public class CarBehavior : BoardItemBehavior
 
         gameCtrl.Board.RemoveItem(this);
         
+        Destroy(gameObject);
+    }
+
+    public void DestroyCar()
+    {
+        sprComp.enabled = false;
+
+        if (attachedTo != null && !(attachedTo is TruckBehavior))
+        {
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("destroyNextCar" + gameObject.GetInstanceID(), 0.25f, () => { ((CarBehavior)attachedTo).DestroyCar(); }));
+        }
+        else
+        {
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("destroyNextCar" + gameObject.GetInstanceID(), 0.5f, () => { Destroy(attachedTo.gameObject); }));
+        }
+
+        gameCtrl.Board.RemoveItem(this);
+
         Destroy(gameObject);
     }
 
