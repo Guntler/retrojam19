@@ -806,6 +806,8 @@ MonoBehaviour:
     type: 3}
   RocketAwayPrefab: {fileID: 891119027490064363, guid: 229e62fd94943b645b55881369974566,
     type: 3}
+  GameOverPrefab: {fileID: 5888985531357614359, guid: b4f6d1c7049af4f43bb7a7d370fcffed,
+    type: 3}
 --- !u!114 &933224248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1652,6 +1654,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2390766482224374158, guid: eedfd25ac8493474ebaa6878220424b0,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 228088423092696016, guid: eedfd25ac8493474ebaa6878220424b0,
         type: 3}
       propertyPath: m_Name

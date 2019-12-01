@@ -210,9 +210,14 @@ public class TruckBehavior : BoardItemBehavior
         eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
         eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
 
-        CarBehavior c = lastCar;
-        gameCtrl.Board.RemoveItem(c);
-        c.DestroyCar();
+        if(lastCar)
+        {
+            CarBehavior c = lastCar;
+            gameCtrl.Board.RemoveItem(c);
+            c.DestroyCar();
+        }
         cars.Clear();
+
+        gameCtrl.RemoveLives();
     }
 }
