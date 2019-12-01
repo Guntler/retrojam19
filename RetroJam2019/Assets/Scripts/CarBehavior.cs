@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class CarBehavior : BoardItemBehavior
 {
+    public Animator animComp;
     public SpriteRenderer sprComp;
     public TruckBehavior truckObj;
     public BoardItemBehavior attachedTo;
+    public BoardItemBehavior attachesTo;
     
     private bool evtReady = false;
+    public bool IsCornerBox = false;
 
     protected override void Start()
     {
         base.Start();
         sprComp = GetComponent<SpriteRenderer>();
+        animComp = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -23,6 +27,48 @@ public class CarBehavior : BoardItemBehavior
             eventCtrl.QueueListener(typeof(TruckCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), TruckDestroyedCallback));
             evtReady = true;
         }
+    }
+
+    private void Update()
+    {
+        if (attachedTo.BoardPosition.x > BoardPosition.x)
+        {
+            animComp.SetBool("IsLeft", false);
+        }
+        else if (attachedTo.BoardPosition.x < BoardPosition.x)
+        {
+            animComp.SetBool("IsLeft", true);
+        }
+
+        if (attachedTo.BoardPosition.y > BoardPosition.y)
+        {
+            animComp.SetBool("IsUp", false);
+            animComp.SetBool("IsFacingSide", false);
+        }
+        else if (attachedTo.BoardPosition.y < BoardPosition.y)
+        {
+            animComp.SetBool("IsUp", true);
+            animComp.SetBool("IsFacingSide", false);
+        }
+        else if (attachedTo.BoardPosition.y == BoardPosition.y)
+        {
+            animComp.SetBool("IsFacingSide", true);
+        }
+
+
+
+        if (attachedTo.BoardPosition.x == BoardPosition.x && attachedTo.BoardPosition.y != BoardPosition.y
+                && attachesTo != null && attachesTo.BoardPosition.y == BoardPosition.y)
+        {
+            animComp.SetBool("IsCornerBox", true);
+            IsCornerBox = true;
+        }
+        else
+        {
+            animComp.SetBool("IsCornerBox", false);
+            IsCornerBox = false;
+        }
+        
     }
 
     public void MoveCar()

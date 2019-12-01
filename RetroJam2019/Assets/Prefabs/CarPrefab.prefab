@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4968775610714804543}
   - component: {fileID: 2558760045110740689}
   - component: {fileID: 21060143}
+  - component: {fileID: 963026625}
   m_Layer: 0
   m_Name: CarPrefab
   m_TagString: Untagged
@@ -70,7 +71,8 @@ SpriteRenderer:
   m_SortingLayerID: -2050389667
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1c964811faf54984fb578104647c55cd, type: 3}
+  m_Sprite: {fileID: -3774541597547798147, guid: b0a5a6bdf7d37224eac20a145167a921,
+    type: 3}
   m_Color: {r: 0.033018887, g: 0.94382185, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,4 +95,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f63d12a79a22c0e45a0b581db453bca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoardPosition: {x: 0, y: 0}
+  LastBoardPosition: {x: 0, y: 0}
+  animComp: {fileID: 0}
+  sprComp: {fileID: 0}
   truckObj: {fileID: 0}
+  attachedTo: {fileID: 0}
+--- !u!95 &963026625
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533451775164369511}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4e39cb120981a34590f155bf3f17f69, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

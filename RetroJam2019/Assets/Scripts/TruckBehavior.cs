@@ -19,10 +19,12 @@ public class TruckBehavior : BoardItemBehavior
 
     List<CarBehavior> cars = new List<CarBehavior>();
     CarBehavior lastCar = null;
+    Animator animComp;
 
     protected override void Start()
     {
         base.Start();
+        animComp = GetComponent<Animator>();
     }
 
     void Update200EvtCallback(GameEvent e)
@@ -68,6 +70,12 @@ public class TruckBehavior : BoardItemBehavior
                 cB.truckObj = this;
                 cB.attachedTo = attachTo;
 
+                if(lastCar != null)
+                {
+                    lastCar.attachesTo = cB;
+                }
+                
+
 
                 gameCtrl.Board.AddItem(cB, attachTo.LastBoardPosition);
                 cars.Add(cB);
@@ -92,6 +100,12 @@ public class TruckBehavior : BoardItemBehavior
     {
         carsDelivered = 0;
         currentMultiplier = 1;
+    }
+
+    private void Update()
+    {
+        animComp.SetFloat("FacingDirectionX", FacingDirection.x);
+        animComp.SetFloat("FacingDirectionY", FacingDirection.y);
     }
 
     void FixedUpdate()
