@@ -33,6 +33,7 @@ public class NewEntryScoreBehavior : MonoBehaviour
         ignoredKeyCodes.Add(KeyCode.RightControl);
         ignoredKeyCodes.Add(KeyCode.LeftShift);
         ignoredKeyCodes.Add(KeyCode.RightShift);
+        ignoredKeyCodes.Add(KeyCode.Tab);
         scoreText = ScoreObj.GetComponent<Text>();
         playerNameText = PlayerNameInputField.GetComponent<Text>();
         eventCtrl = GlobalEventController.GetInstance();
