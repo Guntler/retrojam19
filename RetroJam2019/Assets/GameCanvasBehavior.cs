@@ -8,6 +8,7 @@ public class GameCanvasBehavior : MonoBehaviour
     public GameObject RocketDestroyedPrefab;
     public GameObject RocketAwayPrefab;
     public GameObject GameOverPrefab;
+    public GameObject NameEntryPrefab;
     public GameObject HighScoreTablePrefab;
 
     GlobalEventController eventCtrl;
@@ -17,6 +18,7 @@ public class GameCanvasBehavior : MonoBehaviour
         eventCtrl = GlobalEventController.GetInstance();
         eventCtrl.QueueListener(typeof(RocketSafeEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RocketSafeCallback));
         eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RocketDestroyedCallback));
+        eventCtrl.QueueListener(typeof(ShowNameEntryEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), ShowNameEntryCallback));
         eventCtrl.QueueListener(typeof(ShowHighScoreTable), new GlobalEventController.Listener(gameObject.GetInstanceID(), HighScoreTableCallback));
         eventCtrl.QueueListener(typeof(GameEndEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), GameEndCallback));
     }
@@ -39,6 +41,11 @@ public class GameCanvasBehavior : MonoBehaviour
     void HighScoreTableCallback(GameEvent e)
     {
         Instantiate(HighScoreTablePrefab, transform);
+    }
+
+    void ShowNameEntryCallback(GameEvent e)
+    {
+        Instantiate(NameEntryPrefab, transform);
     }
 
     private void OnDestroy()

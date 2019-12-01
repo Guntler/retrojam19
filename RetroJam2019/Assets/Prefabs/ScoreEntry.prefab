@@ -163,6 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8150766664782869132}
+  - component: {fileID: 8745454794824417355}
   m_Layer: 5
   m_Name: ScoreEntry
   m_TagString: Untagged
@@ -191,3 +192,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -46}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &8745454794824417355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6547097411707215872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 233ef6bcd17d9d140a9d316be4e61802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScoreNameObj: {fileID: 5771282646303259871}
+  ScoreTextObj: {fileID: 2825004646003115188}
+  PlayerName: 
+  EntryIndex: 0
+  ScoreAmt: 0

@@ -85,7 +85,9 @@ public class GameManager : MonoBehaviour
             eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnRocketCollided));
             eventCtrl.QueueListener(typeof(AddScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnAddScore));
             eventCtrl.QueueListener(typeof(StopBackgroundMusicEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopBgmCallback));
-            
+            eventCtrl.QueueListener(typeof(CheckHighScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), CheckScoreCallback));
+            eventCtrl.QueueListener(typeof(RegisterNewEntryEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RegisterNameCallback));
+
             isEventReady = true;
         }
 
@@ -154,7 +156,12 @@ public class GameManager : MonoBehaviour
         eventCtrl.BroadcastEvent(typeof(UpdateScoreEvt), new UpdateScoreEvt(Score));
     }
 
-    List<data_HighScoreEntry> ReadHighScoreList()
+
+    /// <summary>
+    /// UTILITY FUNCTION
+    /// </summary>
+    /// <returns></returns>
+    public List<data_HighScoreEntry> ReadHighScoreList()
     {
         string path = Application.dataPath + "/Resources/Data/HighScores.txt";
         FileStream f = File.OpenRead(path);
@@ -179,20 +186,29 @@ public class GameManager : MonoBehaviour
             currentLine += lines[i];
         }
 
-        string[] fields = currentLine.Split(',');
-
-        if(fields.Length > 0)
+        if(currentLine.Contains(","))
         {
-            data_HighScoreEntry entry = new data_HighScoreEntry();
-            entry.Name = fields[0];
-            entry.Score = Int32.Parse(fields[1]);
+            string[] fields = currentLine.Split(',');
 
-            entryList.Add(entry);
+            if (fields.Length > 0)
+            {
+                data_HighScoreEntry entry = new data_HighScoreEntry();
+                entry.Name = fields[0];
+                entry.Score = Int32.Parse(fields[1]);
+
+                entryList.Add(entry);
+            }
         }
+        
 
         return entryList;
     }
 
+
+    /// <summary>
+    /// UTILITY FUNCTION
+    /// </summary>
+    /// <param name="entryList"></param>
     void WriteHighScoreList(List<data_HighScoreEntry> entryList)
     {
         string path = Application.dataPath + "/Resources/Data/HighScores.txt";
@@ -214,21 +230,35 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// CHECK HIGH SCORE
+    /// </summary>
+    /// <param name="e"></param>
     void CheckScoreCallback(GameEvent e)
     {
         List<data_HighScoreEntry> entryList = ReadHighScoreList();
 
         if(entryList.Count > 0 && entryList[0].Score > Score)
         {
-
+            eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score));
         }
         else
         {
             GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable());
         }
+    }
 
+    void RegisterNameCallback(GameEvent e)
+    {
+        RegisterNewEntryEvt ev = (RegisterNewEntryEvt)e;
 
-        
+        List<data_HighScoreEntry> entryList = ReadHighScoreList();
+
+        entryList.Insert(0, ev.entry);
+        entryList.RemoveAt(entryList.Count - 1);
+        WriteHighScoreList(entryList);
+
+        eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayTableTimer", 1, () => { GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable()); }));
     }
 
 }

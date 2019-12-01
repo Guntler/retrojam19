@@ -42,12 +42,32 @@ public class RocketSafeEvt : GameEvent
 
 }
 
+public class RegisterNewEntryEvt : GameEvent
+{
+    public data_HighScoreEntry entry;
+
+    public RegisterNewEntryEvt(data_HighScoreEntry data)
+    {
+        entry = data;
+    }
+}
+
 public class ShowHighScoreTable : GameEvent
 {
 
 }
 
-public class CheckHighScore : GameEvent
+public class ShowNameEntryEvt : GameEvent
+{
+    public int Score = 0;
+
+    public ShowNameEntryEvt(int score)
+    {
+        Score = score;
+    }
+}
+
+public class CheckHighScoreEvt : GameEvent
 {
 
 }

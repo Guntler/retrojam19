@@ -27,7 +27,20 @@ public class HighScoreTableBehavior : MonoBehaviour
     void Start()
     {
         eventCtrl = GlobalEventController.GetInstance();
-        eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayScoreTimer", RateToDisplay, () => { DisplayEntry(); }));
+        
+    }
+
+    public void BeginDisplay()
+    {
+        entries = GameManager.GetInstance().ReadHighScoreList();
+        if (entries.Count > 0)
+        {
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayScoreTimer", RateToDisplay, () => { DisplayEntry(); }));
+        }
+        else
+        {
+            PressAnyKeyObject.SetActive(true);
+        }
     }
 
     void DisplayEntry()
