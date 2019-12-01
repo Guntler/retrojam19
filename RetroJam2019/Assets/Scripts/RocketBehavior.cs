@@ -15,6 +15,7 @@ public class RocketBehavior : BoardItemBehavior
     public GameObject debrisPrefab;
     public AudioSettings LiftoffSfx;
     public AudioSettings CountdownSfx;
+    public GameObject Explosion;
 
     protected override void Start()
     {
@@ -98,6 +99,7 @@ public class RocketBehavior : BoardItemBehavior
         else if (gameCtrl.Board.GetCell(BoardPosition).BoardItems.Exists(i => i is DebrisBehavior || i is CarBehavior || i is TruckBehavior))
         {
             eventCtrl.BroadcastEvent(typeof(RocketCollidedEvt), new RocketCollidedEvt());
+            GameObject explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
