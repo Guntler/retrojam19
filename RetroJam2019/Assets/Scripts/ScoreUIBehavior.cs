@@ -50,7 +50,7 @@ public class ScoreUIBehavior : MonoBehaviour
     {
         while(currentScore != targetScore)
         {
-            eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(ScoreUpSfx));
+            eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(ScoreUpSfx));
             
             currentScore = Mathf.Clamp(currentScore + ScoreUpdateRate, 0, targetScore);
             textComp.text = currentScore.ToString();

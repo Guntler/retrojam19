@@ -173,7 +173,7 @@ public class TruckBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
-        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(PlayerDeathSfx));
+        eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(PlayerDeathSfx));
 
         eventCtrl.RemoveListener(typeof(Update200Evt), Update200EvtCallback);
         eventCtrl.RemoveListener(typeof(DeliverCarEvt), DeliverCarEvtCallback);

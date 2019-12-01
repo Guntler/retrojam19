@@ -585,6 +585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 729295028}
   minimumTickTime: 0.1
+  Score: 0
 --- !u!4 &897466670
 Transform:
   m_ObjectHideFlags: 0

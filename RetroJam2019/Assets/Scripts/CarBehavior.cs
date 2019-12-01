@@ -124,7 +124,7 @@ public class CarBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
-        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(CarDeathSfx));
+        eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(CarDeathSfx));
         eventCtrl.RemoveListener(typeof(TruckCollidedEvt), TruckDestroyedCallback);
     }
 }

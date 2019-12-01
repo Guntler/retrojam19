@@ -9,7 +9,7 @@ public class GameOverBehavior : MonoBehaviour
 
     public void GameOverCallback()
     {
-        GlobalEventController.GetInstance().BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("gameOverPress_" + gameObject.GetInstanceID(), 2.5f, () => {
+        GlobalEventController.GetInstance().BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("gameOverPress_" + gameObject.GetInstanceID(), 1, () => {
             PressAnyKeyObject.SetActive(true);
             canSkipGameOver = true;
         }));
@@ -20,6 +20,7 @@ public class GameOverBehavior : MonoBehaviour
     {
         if(Input.anyKey && canSkipGameOver)
         {
+            print("Leaving Game Over");
             canSkipGameOver = false;
 
             GlobalEventController.GetInstance().BroadcastEvent(typeof(StopTimerEvent), new StopTimerEvent("gameOver_" + gameObject.GetInstanceID()));

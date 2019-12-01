@@ -45,12 +45,15 @@ public class GameCanvasBehavior : MonoBehaviour
 
     void ShowNameEntryCallback(GameEvent e)
     {
-        Instantiate(NameEntryPrefab, transform);
+        ShowNameEntryEvt ev = (ShowNameEntryEvt)e;
+
+        GameObject obj = Instantiate(NameEntryPrefab, transform);
+        obj.GetComponent<NewEntryScoreBehavior>().UpdateScore(ev.Score);
     }
 
     private void OnDestroy()
     {
-        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(SelectSfx));
+        eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(SelectSfx));
 
         eventCtrl.RemoveListener(typeof(RocketSafeEvt), RocketSafeCallback);
         eventCtrl.RemoveListener(typeof(RocketCollidedEvt), RocketDestroyedCallback);

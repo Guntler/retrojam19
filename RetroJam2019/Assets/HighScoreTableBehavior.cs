@@ -32,10 +32,11 @@ public class HighScoreTableBehavior : MonoBehaviour
 
     public void BeginDisplay()
     {
+        print("DISPLAYING HIGH SCORE TABLE");
         entries = GameManager.GetInstance().ReadHighScoreList();
         if (entries.Count > 0)
         {
-            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayScoreTimer", RateToDisplay, () => { DisplayEntry(); }));
+            eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayScoreTimer", RateToDisplay/3, () => { DisplayEntry(); }));
         }
         else
         {

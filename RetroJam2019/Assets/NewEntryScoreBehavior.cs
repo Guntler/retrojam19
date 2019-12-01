@@ -18,10 +18,21 @@ public class NewEntryScoreBehavior : MonoBehaviour
     
     string currentName = "";
 
+    bool isDone = false;
     bool canType = false;
+
+    List<KeyCode> ignoredKeyCodes = new List<KeyCode>();
 
     void Start()
     {
+        ignoredKeyCodes.Add(KeyCode.Escape);
+        ignoredKeyCodes.Add(KeyCode.Escape);
+        ignoredKeyCodes.Add(KeyCode.Return);
+        ignoredKeyCodes.Add(KeyCode.Backspace);
+        ignoredKeyCodes.Add(KeyCode.LeftControl);
+        ignoredKeyCodes.Add(KeyCode.RightControl);
+        ignoredKeyCodes.Add(KeyCode.LeftShift);
+        ignoredKeyCodes.Add(KeyCode.RightShift);
         scoreText = ScoreObj.GetComponent<Text>();
         playerNameText = PlayerNameInputField.GetComponent<Text>();
         eventCtrl = GlobalEventController.GetInstance();
@@ -30,24 +41,42 @@ public class NewEntryScoreBehavior : MonoBehaviour
 
     void Update()
     {
+        if(isDone)
+        {
+            return;
+        }
+
         if (Input.anyKey && canType)
         {
-            if (Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Backspace))
+            bool shouldIgnoreKey = false;
+            foreach(KeyCode c in ignoredKeyCodes)
             {
-                if(Input.GetKey(KeyCode.KeypadEnter) && currentName.Length > 0)
+                if(Input.GetKey(c))
                 {
-                    eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(InputSfx));
+                    shouldIgnoreKey = true;
+                    break;
+                }
+            }
+
+            if (shouldIgnoreKey)
+            {
+                if((Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return)) && currentName.Length > 0)
+                {
+                    isDone = true;
+                    print("SUBMITTING NAME");
+                    eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(InputSfx));
                     data_HighScoreEntry data = new data_HighScoreEntry();
                     data.Name = currentName;
                     data.Score = Score;
                     eventCtrl.BroadcastEvent(typeof(RegisterNewEntryEvt), new RegisterNewEntryEvt(data));
+                    
                     Destroy(gameObject);
                 }
                 else if (Input.GetKey(KeyCode.Backspace))
                 {
                     if(currentName.Length > 0)
                     {
-                        currentName.Remove(currentName.Length - 1);
+                        currentName = currentName.Remove(currentName.Length - 1);
                     }
                     
                 }
@@ -55,7 +84,7 @@ public class NewEntryScoreBehavior : MonoBehaviour
             }
             else
             {
-                eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(InputSfx));
+                eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(InputSfx));
                 currentName += Input.inputString;
             }
 
@@ -68,6 +97,8 @@ public class NewEntryScoreBehavior : MonoBehaviour
 
     public void UpdateScore(int score)
     {
+        scoreText = ScoreObj.GetComponent<Text>();
+
         Score = score;
         scoreText.text = Score.ToString();
     }

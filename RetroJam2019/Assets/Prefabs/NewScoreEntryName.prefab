@@ -76,7 +76,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GUNTLER
+  m_Text: 
 --- !u!1 &7906264233550336957
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputSfx: {fileID: 11400000, guid: 05205a1d6d7a22a46b8fbed9d6f7bdd5, type: 2}
   ScoreObj: {fileID: 7906264233782441742}
-  PlayerNameInputField: {fileID: 7906264233924730168}
+  PlayerNameInputField: {fileID: 7906264233072452852}
   Score: 0
   TypingDelay: 0.1
 --- !u!1 &7906264233782441742
@@ -288,7 +288,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2222222222222222
+  m_Text: 
 --- !u!1 &7906264233818072858
 GameObject:
   m_ObjectHideFlags: 0

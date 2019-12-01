@@ -50,7 +50,7 @@ public class RocketBehavior : BoardItemBehavior
             {
                 hasLaunched = true;
                 eventCtrl.BroadcastEvent(typeof(LaunchedRocketEvt), new LaunchedRocketEvt());
-                eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(LiftoffSfx));
+                eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(LiftoffSfx));
             }
             else
             {
@@ -59,7 +59,7 @@ public class RocketBehavior : BoardItemBehavior
                 count.DefaultVolume = CountdownSfx.DefaultVolume;
                 count.DefaultPitch = countDownTime / MaxCountdownTime;
                 
-                eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(count));
+                eventCtrl.BroadcastEvent(typeof(PlayOneshotClipEvent), new PlayOneshotClipEvent(count));
             }
         }
         else

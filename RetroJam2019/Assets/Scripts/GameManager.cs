@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Score = 0;
+        Score = 10;
         Lives = 5;
         eventCtrl = GlobalEventController.GetInstance();
         bgmSrc = GetComponent<AudioSource>();
@@ -132,12 +132,11 @@ public class GameManager : MonoBehaviour
 
     void OnRocketCollided(GameEvent e)
     {
-        eventCtrl.BroadcastEvent(typeof(StopBackgroundMusicEvt), new StopBackgroundMusicEvt());
-
         Lives--;
 
         if (Lives <= 0)
         {
+            eventCtrl.BroadcastEvent(typeof(StopBackgroundMusicEvt), new StopBackgroundMusicEvt());
             eventCtrl.BroadcastEvent(typeof(GameEndEvt), new GameEndEvt());
             Player.GetComponent<TruckBehavior>().DestroyTruck();
         }
@@ -163,6 +162,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public List<data_HighScoreEntry> ReadHighScoreList()
     {
+        Debug.Log("READING FROM HIGH SCORES FILE");
+
         string path = Application.dataPath + "/Resources/Data/HighScores.txt";
         FileStream f = File.OpenRead(path);
 
@@ -199,7 +200,8 @@ public class GameManager : MonoBehaviour
                 entryList.Add(entry);
             }
         }
-        
+
+        f.Close();
 
         return entryList;
     }
@@ -211,22 +213,24 @@ public class GameManager : MonoBehaviour
     /// <param name="entryList"></param>
     void WriteHighScoreList(List<data_HighScoreEntry> entryList)
     {
+        Debug.Log("WRITING TO HIGH SCORES FILE " + entryList.Count);
         string path = Application.dataPath + "/Resources/Data/HighScores.txt";
-        FileStream f = File.OpenRead(path);
+        
 
         List<string> lines = new List<string>();
-
+        string fullText = "";
         foreach(data_HighScoreEntry en in entryList)
         {
             string line = en.Name + "," + en.Score + "\n";
+            fullText += line;
             lines.Add(line);
         }
+        print("Writing " + lines);
+        StreamWriter writer = new StreamWriter(path, true);
+        writer.WriteLine(fullText);
+        writer.Close();
 
-        using (StreamWriter outputFile = new StreamWriter(path))
-        {
-            foreach (string line in lines)
-                outputFile.WriteLine(line);
-        }
+        
 
     }
 
@@ -236,9 +240,11 @@ public class GameManager : MonoBehaviour
     /// <param name="e"></param>
     void CheckScoreCallback(GameEvent e)
     {
+        print("Checking score");
         List<data_HighScoreEntry> entryList = ReadHighScoreList();
+        print("Found " + entryList.Count);
 
-        if(entryList.Count > 0 && entryList[0].Score > Score)
+        if ((entryList.Count > 0 && entryList[0].Score > Score) || (entryList.Count == 0 && Score > 0))
         {
             eventCtrl.BroadcastEvent(typeof(ShowNameEntryEvt), new ShowNameEntryEvt(Score));
         }
@@ -250,12 +256,21 @@ public class GameManager : MonoBehaviour
 
     void RegisterNameCallback(GameEvent e)
     {
+        print("REGISTERING NEW NAME");
         RegisterNewEntryEvt ev = (RegisterNewEntryEvt)e;
 
         List<data_HighScoreEntry> entryList = ReadHighScoreList();
 
-        entryList.Insert(0, ev.entry);
-        entryList.RemoveAt(entryList.Count - 1);
+        if(entryList.Count > 0)
+        {
+            entryList.Insert(0, ev.entry);
+            entryList.RemoveAt(entryList.Count - 1);
+        }
+        else
+        {
+            entryList.Insert(0, ev.entry);
+        }
+        
         WriteHighScoreList(entryList);
 
         eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayTableTimer", 1, () => { GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable()); }));
