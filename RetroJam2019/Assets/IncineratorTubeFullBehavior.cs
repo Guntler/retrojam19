@@ -12,6 +12,7 @@ public class IncineratorTubeFullBehavior : MonoBehaviour
 
     private void Start()
     {
+        GetComponent<AudioSource>().Play();
         eventCtrl = GlobalEventController.GetInstance();
         eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("incinFullTimer_" + gameObject.GetInstanceID(), 0.15f, MoveTubeFull));
     }

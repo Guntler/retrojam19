@@ -17,6 +17,8 @@ public class TruckBehavior : BoardItemBehavior
     private int currentMultiplier = 1;
     private int carsDelivered = 0;
 
+    public AudioClip PickupSound;
+
     List<CarBehavior> cars = new List<CarBehavior>();
     CarBehavior lastCar = null;
     Animator animComp;
@@ -38,6 +40,8 @@ public class TruckBehavior : BoardItemBehavior
 
         Vector2 prevCarBoardPos = BoardPosition;
 
+        GetComponent<AudioSource>().Play();
+
         foreach (CarBehavior c in cars)
         {
             c.MoveCar();
@@ -53,6 +57,7 @@ public class TruckBehavior : BoardItemBehavior
             BoardItemBehavior bEv = gameCtrl.Board.GetCell(BoardPosition).BoardItems.Find(b => b is DebrisBehavior);
             if (bEv != null)
             {
+                GetComponent<AudioSource>().PlayOneShot(PickupSound, 1);
                 eventCtrl.BroadcastEvent(typeof(PickedUpDebrisEvt), new PickedUpDebrisEvt(bEv));
 
                 BoardItemBehavior attachTo = null;
