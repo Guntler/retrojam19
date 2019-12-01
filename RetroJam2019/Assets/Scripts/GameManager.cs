@@ -129,6 +129,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RemoveLives()
+    {
+        Lives = 0;
+
+        eventCtrl.BroadcastEvent(typeof(GameEndEvt), new GameEndEvt());
+    }
+
     void OnAddScore(GameEvent e)
     {
         AddScoreEvt ev = (AddScoreEvt)e;
