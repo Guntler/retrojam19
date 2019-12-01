@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LifeUIBehavior : MonoBehaviour
 {
@@ -19,14 +20,31 @@ public class LifeUIBehavior : MonoBehaviour
         if (!isEventReady)
         {
             eventController.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnRocketCollide));
+            eventController.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameStart));
             isEventReady = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        eventController.RemoveListener(typeof(GameStartEvt), OnGameStart);
+        eventController.RemoveListener(typeof(RocketCollidedEvt), OnRocketCollide);
     }
 
     void OnRocketCollide(GameEvent e)
     {
         var image = transform.Find("Life" + Lives);
-        Destroy(image.gameObject);
+        image.GetComponent<Image>().enabled = false;
         Lives--;
+    }
+
+    void OnGameStart(GameEvent e)
+    {
+        Lives = 5;
+        for (var i = 1; i <= 5; i++)
+        {
+            var image = transform.Find("Life" + i);
+            image.GetComponent<Image>().enabled = true;
+        }
     }
 }

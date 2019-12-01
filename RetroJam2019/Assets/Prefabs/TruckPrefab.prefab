@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228088423092696016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: 3, z: 0}
+  m_LocalPosition: {x: 6.5, y: -8.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -96,13 +96,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e072c7225fd2be48ab8b4d68bb312ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardPosition: {x: 0, y: 0}
+  BoardPosition: {x: 6, y: 8}
   LastBoardPosition: {x: 0, y: 0}
   CarPrefab: {fileID: 533451775164369511, guid: aa16328276c528447a6b080f051f2b43,
     type: 3}
   FacingDirection: {x: 1, y: 0}
   CarIntervalForMultiplier: 5
   PickupSound: {fileID: 8300000, guid: dc0ffb8a30c4bc542b5cc6e51b8ff78a, type: 3}
+  PlayerDeathSfx: {fileID: 11400000, guid: 24d23b21b90fa3c44b6b2f7c9999868c, type: 2}
+  ExplosionSound: {fileID: 0}
   Explosion: {fileID: 1609793254669226126, guid: 38aed43ec19eae24a9fea2d1ee862750,
     type: 3}
 --- !u!95 &743484960
@@ -136,7 +138,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5077a079770114448ab2b613574daa9c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.14
+  m_Volume: 0.08
   m_Pitch: 0.8
   Loop: 0
   Mute: 0

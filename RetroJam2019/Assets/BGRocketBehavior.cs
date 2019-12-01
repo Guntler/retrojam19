@@ -11,6 +11,7 @@ public class BGRocketBehavior : MonoBehaviour
     private Animator animComp;
     private GameManager gameCtrl;
     private bool arrivedAtPos = false;
+    private GlobalEventController eventCtrl;
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +20,24 @@ public class BGRocketBehavior : MonoBehaviour
         animComp = GetComponent<Animator>();
         TargetWorldPos = gameCtrl.Board.GetWorldPosition(new Vector2(TargetBoardPos.x, -TargetBoardPos.y));
         transform.position = new Vector2(TargetWorldPos.x, -19);
+        eventCtrl = GlobalEventController.GetInstance();
+        eventCtrl.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameEnd));
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        eventCtrl.RemoveListener(typeof(GameStartEvt), OnGameEnd);
+    }
+
+    void OnGameEnd( GameEvent e)
+    {
+        Destroy(gameObject);
     }
 
     private void FixedUpdate()

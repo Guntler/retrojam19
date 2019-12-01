@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     private bool isEventReady = false;
 
+    public GameObject PlayerPrefab;
+
     void Start()
     {
         Score = 10;
@@ -87,7 +89,7 @@ public class GameManager : MonoBehaviour
             eventCtrl.QueueListener(typeof(StopBackgroundMusicEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopBgmCallback));
             eventCtrl.QueueListener(typeof(CheckHighScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), CheckScoreCallback));
             eventCtrl.QueueListener(typeof(RegisterNewEntryEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RegisterNameCallback));
-
+            eventCtrl.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), GameResetCallback));
             isEventReady = true;
         }
 
@@ -274,6 +276,28 @@ public class GameManager : MonoBehaviour
         WriteHighScoreList(entryList);
 
         eventCtrl.BroadcastEvent(typeof(StartTimerEvent), new StartTimerEvent("displayTableTimer", 1, () => { GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable()); }));
+    }
+
+    void GameResetCallback(GameEvent e)
+    {
+        var items = Board.GetAllItems();
+        foreach(var item in items)
+        {
+            if (item != null)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+
+        Score = 0;
+        Lives = 5;
+
+        Board = new GameBoard();
+
+        Player = Instantiate(PlayerPrefab);
+        bgmSrc.Play();
+
+        eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
     }
 
 }

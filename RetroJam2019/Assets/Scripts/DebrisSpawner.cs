@@ -66,6 +66,7 @@ public class DebrisSpawner : MonoBehaviour
             eventController = GlobalEventController.GetInstance();
             eventController.QueueListener(typeof(Update1000Evt), new GlobalEventController.Listener(GetInstanceID(), InstatiateAtRandomPos));
             evtReady = true;
+            eventController.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameEnd));
         }
 
         if (_gameManager.Score > 1000)
@@ -88,6 +89,14 @@ public class DebrisSpawner : MonoBehaviour
         {
             SpawnRate = 3;
         }
+    }
+
+    void OnGameEnd(GameEvent e)
+    {
+        reservedPositions.Clear();
+        _gameBoard = _gameManager.Board;
+        SpawnRate = 8;
+        spawnTick = 0;
     }
 
     private bool HasRocketInColumn(int x)

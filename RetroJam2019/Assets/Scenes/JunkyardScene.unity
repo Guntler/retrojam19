@@ -585,7 +585,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 729295028}
   minimumTickTime: 0.1
-  Score: 0
+  PlayerPrefab: {fileID: 228088423092696016, guid: eedfd25ac8493474ebaa6878220424b0,
+    type: 3}
 --- !u!4 &897466670
 Transform:
   m_ObjectHideFlags: 0

@@ -22,7 +22,8 @@ public class ScoreUIBehavior : MonoBehaviour
         eventCtrl = GlobalEventController.GetInstance();
         eventCtrl.QueueListener(typeof(UpdateScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), UpdateScoreCallback));
         eventCtrl.QueueListener(typeof(CreateScoreMultiplierTextEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), CreateScoreMultiplierTextCallback));
-        
+        eventCtrl.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameStart));
+        eventCtrl.QueueListener(typeof(GameEndEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameEnd));
         textComp = GetComponent<Text>();
     }
 
@@ -46,6 +47,27 @@ public class ScoreUIBehavior : MonoBehaviour
         currentUpdateRoutine = StartCoroutine(UpdateScore());
     }
 
+    void OnGameStart(GameEvent e)
+    {
+        targetScore = 0;
+        currentScore = 0;
+        textComp.text = currentScore.ToString();
+
+        if (currentUpdateRoutine != null)
+        {
+            StopCoroutine(currentUpdateRoutine);
+        }
+    }
+
+    void OnGameEnd(GameEvent e)
+    {
+        if (currentUpdateRoutine != null)
+        {
+            StopCoroutine(currentUpdateRoutine);
+        }
+        currentScore = targetScore;
+        textComp.text = currentScore.ToString();
+    }
     IEnumerator UpdateScore()
     {
         while(currentScore != targetScore)

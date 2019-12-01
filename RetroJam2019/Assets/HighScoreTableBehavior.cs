@@ -63,6 +63,7 @@ public class HighScoreTableBehavior : MonoBehaviour
         else
         {
             PressAnyKeyObject.SetActive(true);
+            canSkipGameOver = true;
         }
     }
 
@@ -72,7 +73,8 @@ public class HighScoreTableBehavior : MonoBehaviour
         {
             canSkipGameOver = false;
 
-            //TODO: restart game
+            eventCtrl.BroadcastEvent(typeof(GameStartEvt), new GameStartEvt());
+            Destroy(gameObject);
         }
     }
 }

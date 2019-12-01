@@ -59,6 +59,14 @@ public class RocketSpawner : MonoBehaviour
             eventController = GlobalEventController.GetInstance();
             eventController.QueueListener(typeof(Update1000Evt), new GlobalEventController.Listener(GetInstanceID(), InstatiateAtRandomPos));
             evtReady = true;
+            eventController.QueueListener(typeof(GameStartEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnGameEnd));
         }
+    }
+
+    void OnGameEnd(GameEvent e)
+    {
+        _gameBoard = _gameManager.Board;
+        SpawnRate = 3;
+        spawnTick = 0;
     }
 }
