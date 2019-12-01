@@ -8,6 +8,7 @@ public class ScoreUIBehavior : MonoBehaviour
     public GameObject ScoreMultiplierPrefab;
     public float UpdateInterval = 0.25f;
     public int ScoreUpdateRate = 5;
+    public AudioSettings ScoreUpSfx;
 
     private int currentScore = 0;
     private int targetScore = 0;
@@ -34,7 +35,6 @@ public class ScoreUIBehavior : MonoBehaviour
 
     void UpdateScoreCallback(GameEvent e)
     {
-        print("Updating score");
         UpdateScoreEvt ev = (UpdateScoreEvt)e;
         targetScore = ev.ScoreAmt;
 
@@ -50,7 +50,8 @@ public class ScoreUIBehavior : MonoBehaviour
     {
         while(currentScore != targetScore)
         {
-            print("Updating score " + currentScore + " to " + targetScore);
+            eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(ScoreUpSfx));
+            
             currentScore = Mathf.Clamp(currentScore + ScoreUpdateRate, 0, targetScore);
             textComp.text = currentScore.ToString();
             yield return new WaitForSeconds(UpdateInterval);

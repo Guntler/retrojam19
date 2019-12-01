@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RocketBehavior : BoardItemBehavior
 {
+    public int MaxCountdownTime = 10;
     int countDownTime = 10;
     int dropDebrisTime = 13;
     bool hasLaunched = false;
@@ -12,6 +13,8 @@ public class RocketBehavior : BoardItemBehavior
     public List<float> frameTimes = new List<float>();
     Animator animComp;
     public GameObject debrisPrefab;
+    public AudioSettings LiftoffSfx;
+    public AudioSettings CountdownSfx;
 
     protected override void Start()
     {
@@ -47,6 +50,16 @@ public class RocketBehavior : BoardItemBehavior
             {
                 hasLaunched = true;
                 eventCtrl.BroadcastEvent(typeof(LaunchedRocketEvt), new LaunchedRocketEvt());
+                eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(LiftoffSfx));
+            }
+            else
+            {
+                AudioSettings count = new AudioSettings();
+                count.Clip = CountdownSfx.Clip;
+                count.DefaultVolume = CountdownSfx.DefaultVolume;
+                count.DefaultPitch = countDownTime / MaxCountdownTime;
+                
+                eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(count));
             }
         }
         else

@@ -42,6 +42,21 @@ public class RocketSafeEvt : GameEvent
 
 }
 
+public class ShowHighScoreTable : GameEvent
+{
+
+}
+
+public class CheckHighScore : GameEvent
+{
+
+}
+
+public class StopBackgroundMusicEvt : GameEvent
+{
+
+}
+
 public class TruckCollidedEvt : GameEvent
 {
 

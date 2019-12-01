@@ -102,7 +102,7 @@ public class GlobalAudioController : MonoBehaviour
     {
         
         PlayBackgroundClip ev = (PlayBackgroundClip)e;
-        masterSrc.volume = 0;
+        masterSrc.volume = ev.AudioObject.DefaultVolume;
         masterSrc.pitch = ev.AudioObject.DefaultPitch;
         masterSrc.clip = ev.AudioObject.Clip;
 

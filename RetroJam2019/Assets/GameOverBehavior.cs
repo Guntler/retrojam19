@@ -23,6 +23,7 @@ public class GameOverBehavior : MonoBehaviour
             canSkipGameOver = false;
 
             GlobalEventController.GetInstance().BroadcastEvent(typeof(StopTimerEvent), new StopTimerEvent("gameOver_" + gameObject.GetInstanceID()));
+            GlobalEventController.GetInstance().BroadcastEvent(typeof(CheckHighScore), new CheckHighScore());
             Destroy(transform.parent.gameObject);
         }
     }

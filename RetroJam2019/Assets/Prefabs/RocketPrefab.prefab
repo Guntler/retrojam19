@@ -72,7 +72,8 @@ SpriteRenderer:
   m_SortingLayerID: -2050389667
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6729353acb6169d4693f909a84d60635, type: 3}
+  m_Sprite: {fileID: -8805714336352189012, guid: 3abb7eea5b27c9c4d92a0ec066657e65,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b723364b4d39bb844a47bd891e37612a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardPosition: {x: 0, y: 0}
+  BoardPosition: {x: 11, y: 18}
   LastBoardPosition: {x: 0, y: 0}
   BottomBoardPosition: {x: 0, y: 0}
   frameTimes:
@@ -104,6 +105,8 @@ MonoBehaviour:
   - 0.9
   debrisPrefab: {fileID: 7595982515217368957, guid: 59a76ee17b9730a4490f19f745ba45dc,
     type: 3}
+  LiftoffSfx: {fileID: 11400000, guid: 84d6417f769aca24db73bd7dfaff7495, type: 2}
+  CountdownSfx: {fileID: 11400000, guid: 774269ed9076d9041a66448df9a0204c, type: 2}
 --- !u!95 &4621549386031323121
 Animator:
   serializedVersion: 3

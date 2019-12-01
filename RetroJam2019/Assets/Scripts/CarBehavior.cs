@@ -12,6 +12,7 @@ public class CarBehavior : BoardItemBehavior
     
     private bool evtReady = false;
     public bool IsCornerBox = false;
+    public AudioSettings CarDeathSfx;
 
     protected override void Start()
     {
@@ -123,7 +124,7 @@ public class CarBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
-        eventCtrl.BroadcastEvent(typeof(StopTimerEvent), new StopTimerEvent("destroyNextCar" + gameObject.GetInstanceID()));
+        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(CarDeathSfx));
         eventCtrl.RemoveListener(typeof(TruckCollidedEvt), TruckDestroyedCallback);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -25,7 +26,9 @@ public class GameManager : MonoBehaviour
             return null;
     }
 
+    AudioSource bgmSrc;
     GlobalEventController eventCtrl;
+    
     public GameObject Player;
     float evtTimeAccumulator = 0;
     int evtTicker = 0;
@@ -54,7 +57,7 @@ public class GameManager : MonoBehaviour
         Score = 0;
         Lives = 5;
         eventCtrl = GlobalEventController.GetInstance();
-        
+        bgmSrc = GetComponent<AudioSource>();
         Board = new GameBoard();
     }
 
@@ -68,6 +71,11 @@ public class GameManager : MonoBehaviour
         isTicking = false;
     }
 
+    void StopBgmCallback(GameEvent e)
+    {
+        bgmSrc.Stop();
+    }
+
     private void FixedUpdate()
     {
         if (!isEventReady)
@@ -76,6 +84,8 @@ public class GameManager : MonoBehaviour
             eventCtrl.QueueListener(typeof(StopTickEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopTickCallback));
             eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnRocketCollided));
             eventCtrl.QueueListener(typeof(AddScoreEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), OnAddScore));
+            eventCtrl.QueueListener(typeof(StopBackgroundMusicEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), StopBgmCallback));
+            
             isEventReady = true;
         }
 
@@ -120,6 +130,8 @@ public class GameManager : MonoBehaviour
 
     void OnRocketCollided(GameEvent e)
     {
+        eventCtrl.BroadcastEvent(typeof(StopBackgroundMusicEvt), new StopBackgroundMusicEvt());
+
         Lives--;
 
         if (Lives <= 0)
@@ -132,7 +144,6 @@ public class GameManager : MonoBehaviour
     public void RemoveLives()
     {
         Lives = 0;
-
         eventCtrl.BroadcastEvent(typeof(GameEndEvt), new GameEndEvt());
     }
 
@@ -142,4 +153,82 @@ public class GameManager : MonoBehaviour
         Score += ev.ScoreAmt;
         eventCtrl.BroadcastEvent(typeof(UpdateScoreEvt), new UpdateScoreEvt(Score));
     }
+
+    List<data_HighScoreEntry> ReadHighScoreList()
+    {
+        string path = Application.dataPath + "/Resources/Data/HighScores.txt";
+        FileStream f = File.OpenRead(path);
+
+        string lines = "";
+        if (f != null && f.CanRead)
+        {
+            lines = File.ReadAllText(path);
+        }
+
+        List<data_HighScoreEntry> entryList = new List<data_HighScoreEntry>();
+
+        string currentLine = "";
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i] == '\n')
+            {
+                continue;
+            }
+
+            currentLine += lines[i];
+        }
+
+        string[] fields = currentLine.Split(',');
+
+        if(fields.Length > 0)
+        {
+            data_HighScoreEntry entry = new data_HighScoreEntry();
+            entry.Name = fields[0];
+            entry.Score = Int32.Parse(fields[1]);
+
+            entryList.Add(entry);
+        }
+
+        return entryList;
+    }
+
+    void WriteHighScoreList(List<data_HighScoreEntry> entryList)
+    {
+        string path = Application.dataPath + "/Resources/Data/HighScores.txt";
+        FileStream f = File.OpenRead(path);
+
+        List<string> lines = new List<string>();
+
+        foreach(data_HighScoreEntry en in entryList)
+        {
+            string line = en.Name + "," + en.Score + "\n";
+            lines.Add(line);
+        }
+
+        using (StreamWriter outputFile = new StreamWriter(path))
+        {
+            foreach (string line in lines)
+                outputFile.WriteLine(line);
+        }
+
+    }
+
+    void CheckScoreCallback(GameEvent e)
+    {
+        List<data_HighScoreEntry> entryList = ReadHighScoreList();
+
+        if(entryList.Count > 0 && entryList[0].Score > Score)
+        {
+
+        }
+        else
+        {
+            GlobalEventController.GetInstance().BroadcastEvent(typeof(ShowHighScoreTable), new ShowHighScoreTable());
+        }
+
+
+        
+    }
+
 }

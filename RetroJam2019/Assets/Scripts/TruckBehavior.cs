@@ -18,7 +18,9 @@ public class TruckBehavior : BoardItemBehavior
     private int carsDelivered = 0;
 
     public AudioClip PickupSound;
-
+    
+    AudioSource sfxSrc;
+    public AudioSettings PlayerDeathSfx;
     List<CarBehavior> cars = new List<CarBehavior>();
     CarBehavior lastCar = null;
     Animator animComp;
@@ -27,6 +29,7 @@ public class TruckBehavior : BoardItemBehavior
     {
         base.Start();
         animComp = GetComponent<Animator>();
+        sfxSrc = GetComponent<AudioSource>();
     }
 
     void Update200EvtCallback(GameEvent e)
@@ -40,7 +43,7 @@ public class TruckBehavior : BoardItemBehavior
 
         Vector2 prevCarBoardPos = BoardPosition;
 
-        GetComponent<AudioSource>().Play();
+        sfxSrc.Play();
 
         foreach (CarBehavior c in cars)
         {
@@ -57,7 +60,7 @@ public class TruckBehavior : BoardItemBehavior
             BoardItemBehavior bEv = gameCtrl.Board.GetCell(BoardPosition).BoardItems.Find(b => b is DebrisBehavior);
             if (bEv != null)
             {
-                GetComponent<AudioSource>().PlayOneShot(PickupSound, 1);
+                sfxSrc.PlayOneShot(PickupSound, 1);
                 eventCtrl.BroadcastEvent(typeof(PickedUpDebrisEvt), new PickedUpDebrisEvt(bEv));
 
                 BoardItemBehavior attachTo = null;
@@ -170,7 +173,11 @@ public class TruckBehavior : BoardItemBehavior
 
     private void OnDestroy()
     {
+        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(PlayerDeathSfx));
+
         eventCtrl.RemoveListener(typeof(Update200Evt), Update200EvtCallback);
+        eventCtrl.RemoveListener(typeof(DeliverCarEvt), DeliverCarEvtCallback);
+        eventCtrl.RemoveListener(typeof(DeliveredDebrisEvt), DeliveredDebrisEvtCallback);
     }
 
     private bool CheckCollision()
@@ -207,6 +214,7 @@ public class TruckBehavior : BoardItemBehavior
 
     public void DestroyTruck()
     {
+        eventCtrl.BroadcastEvent(typeof(StopBackgroundMusicEvt), new StopBackgroundMusicEvt());
         eventCtrl.BroadcastEvent(typeof(TruckCollidedEvt), new TruckCollidedEvt());
         eventCtrl.BroadcastEvent(typeof(StopTickEvt), new StopTickEvt());
 
@@ -216,7 +224,12 @@ public class TruckBehavior : BoardItemBehavior
             gameCtrl.Board.RemoveItem(c);
             c.DestroyCar();
         }
+        else
+        {
+            Destroy(gameObject);
+        }
         cars.Clear();
+        
 
         gameCtrl.RemoveLives();
     }

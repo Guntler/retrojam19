@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class GameCanvasBehavior : MonoBehaviour
 {
+    public AudioSettings SelectSfx;
     public GameObject RocketDestroyedPrefab;
     public GameObject RocketAwayPrefab;
     public GameObject GameOverPrefab;
+    public GameObject HighScoreTablePrefab;
+
     GlobalEventController eventCtrl;
 
     void Start()
@@ -14,6 +17,7 @@ public class GameCanvasBehavior : MonoBehaviour
         eventCtrl = GlobalEventController.GetInstance();
         eventCtrl.QueueListener(typeof(RocketSafeEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RocketSafeCallback));
         eventCtrl.QueueListener(typeof(RocketCollidedEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), RocketDestroyedCallback));
+        eventCtrl.QueueListener(typeof(ShowHighScoreTable), new GlobalEventController.Listener(gameObject.GetInstanceID(), HighScoreTableCallback));
         eventCtrl.QueueListener(typeof(GameEndEvt), new GlobalEventController.Listener(gameObject.GetInstanceID(), GameEndCallback));
     }
 
@@ -32,8 +36,15 @@ public class GameCanvasBehavior : MonoBehaviour
         Instantiate(GameOverPrefab, transform);
     }
 
+    void HighScoreTableCallback(GameEvent e)
+    {
+        Instantiate(HighScoreTablePrefab, transform);
+    }
+
     private void OnDestroy()
     {
+        eventCtrl.BroadcastEvent(typeof(PlayBackgroundClip), new PlayBackgroundClip(SelectSfx));
+
         eventCtrl.RemoveListener(typeof(RocketSafeEvt), RocketSafeCallback);
         eventCtrl.RemoveListener(typeof(RocketCollidedEvt), RocketDestroyedCallback);
     }

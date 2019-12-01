@@ -101,6 +101,9 @@ MonoBehaviour:
   sprComp: {fileID: 0}
   truckObj: {fileID: 0}
   attachedTo: {fileID: 0}
+  attachesTo: {fileID: 0}
+  IsCornerBox: 0
+  CarDeathSfx: {fileID: 11400000, guid: e8e6a47d0d267b848835d4ad13bd1517, type: 2}
 --- !u!95 &963026625
 Animator:
   serializedVersion: 3
