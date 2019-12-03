@@ -97,7 +97,6 @@ public class CarBehavior : BoardItemBehavior
         else
         {
             eventCtrl.BroadcastEvent(typeof(DeliveredDebrisEvt), new DeliveredDebrisEvt());
-            eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
         }
 
         gameCtrl.Board.RemoveItem(this);

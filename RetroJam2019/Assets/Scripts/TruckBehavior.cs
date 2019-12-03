@@ -8,6 +8,7 @@ public class TruckBehavior : BoardItemBehavior
 {
     public GameObject CarPrefab;
     public Vector2 FacingDirection = new Vector2(1, 0); //x1 - Right, x-1 - Left, y-1 - Up, y1 - Down
+    private Vector2 NextFacingDirection = new Vector2(1, 0);
 
     /// <summary>
     /// Minimum amount of crates to earn a new multiplier level
@@ -28,6 +29,8 @@ public class TruckBehavior : BoardItemBehavior
     CarBehavior lastCar = null;
     Animator animComp;
 
+    private bool canMove = true;
+
     protected override void Start()
     {
         base.Start();
@@ -37,6 +40,7 @@ public class TruckBehavior : BoardItemBehavior
 
     void Update200EvtCallback(GameEvent e)
     {
+        FacingDirection = NextFacingDirection;
         Vector2 prevPos = transform.position;
 
         LastBoardPosition = BoardPosition;
@@ -111,6 +115,7 @@ public class TruckBehavior : BoardItemBehavior
     {
         carsDelivered = 0;
         currentMultiplier = 1;
+        canMove = true;
     }
 
     private void Update()
@@ -136,41 +141,31 @@ public class TruckBehavior : BoardItemBehavior
         if(Input.GetKey(KeyCode.W) && FacingDirection.y != 1)
         {
             //transform.position += new Vector3(0, GameManager.TILE_Y);
-            FacingDirection = new Vector2(0, -1);
+            NextFacingDirection = new Vector2(0, -1);
             hasMoved = true;
         }
         else if (Input.GetKey(KeyCode.A) && FacingDirection.x != 1)
         {
             //transform.position += new Vector3(-GameManager.TILE_X, 0);
-            FacingDirection = new Vector2(-1, 0);
+            NextFacingDirection = new Vector2(-1, 0);
             hasMoved = true;
         }
         else if (Input.GetKey(KeyCode.S) && FacingDirection.y != -1)
         {
             //transform.position += new Vector3(0, -GameManager.TILE_Y);
-            FacingDirection = new Vector2(0, 1);
+            NextFacingDirection = new Vector2(0, 1);
             hasMoved = true;
         }
         else if (Input.GetKey(KeyCode.D) && FacingDirection.x != -1)
         {
             //transform.position += new Vector3(GameManager.TILE_X, 0);
-            FacingDirection = new Vector2(1, 0);
+            NextFacingDirection = new Vector2(1, 0);
             hasMoved = true;
         }
-        else if (Input.GetKey(KeyCode.G))
-        {
-            GameObject car = Instantiate(CarPrefab, transform.position, new Quaternion(0, 0, 0, 0));
-            transform.position += new Vector3(GameManager.TILE_X * FacingDirection.x, GameManager.TILE_Y * FacingDirection.y * -1);
-            CarBehavior cB = car.GetComponent<CarBehavior>();
-            cB.truckObj = this;
 
-            gameCtrl.Board.AddItem(cB, (int)BoardPosition.x, (int)BoardPosition.y);
-            cars.Add(cB);
-        }
-
-        if(hasMoved)
+        if(hasMoved && !gameCtrl.IsTicking && canMove)
         {
-            
+            eventCtrl.BroadcastEvent(typeof(StartTickEvt), new StartTickEvt());
         }
     }
 
@@ -208,8 +203,9 @@ public class TruckBehavior : BoardItemBehavior
                 gameCtrl.Board.RemoveItem(c);
                 c.DeliverCar();
                 cars.Clear();
+
+                canMove = false;
             }
-            
         }
 
         return false;

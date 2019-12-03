@@ -37,6 +37,14 @@ public class GameManager : MonoBehaviour
     public float minimumTickTime = 0.1f;
     private bool isTicking = true;
 
+    public bool IsTicking
+    {
+        get
+        {
+            return isTicking;
+        }
+    }
+
     public int Score
     {
         get; set;
